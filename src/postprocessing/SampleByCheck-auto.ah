@@ -1,0 +1,5 @@
+python3 SampleByCheck.py --ver v21 --step 1 --data BDTdata
+python3 SampleByCheck.py --ver v21 --step 2 --data BDTdata
+
+python3 SampleByCheck.py --ver v21 --step 1 --data data
+python3 SampleByCheck.py --ver v21 --step 2 --data data

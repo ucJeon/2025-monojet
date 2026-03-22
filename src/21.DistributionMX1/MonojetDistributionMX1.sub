@@ -1,0 +1,75 @@
+universe = vanilla
+
+getenv = True
+
+transfer_input_files = toCondor/
+
+executable = exe.sh
+
+output    = ./logs/out/MonojetDistributionMX1/$(ClusterId).$(ProcId)
+error     = ./logs/err/MonojetDistributionMX1/$(ClusterId).$(ProcId)
+log       = ./logs/log/MonojetDistributionMX1/$(ClusterId).$(ProcId)
+
+should_transfer_files   = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files   = ""
+
+request_cpus   = 1
+request_memory = 5G
+request_disk   = 10G
+
++JobBatchName = "MonojetDistributionMX1"
+arguments = $(ClusterId) $(ProcId) Signal_1-0_0-3_2-0.0.0.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-0_0-3_2-0.0.1.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-0_0-3_2-0.0.2.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-0_0-3_2-0.0.3.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-0_0-3_2-0.0.4.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-5_0-3_2-0.0.0.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-5_0-3_2-0.0.1.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-5_0-3_2-0.0.2.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-5_0-3_2-0.0.3.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_1-5_0-3_2-0.0.4.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-0_0-3_2-0.0.0.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-0_0-3_2-0.0.1.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-0_0-3_2-0.0.2.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-0_0-3_2-0.0.3.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-0_0-3_2-0.0.4.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-5_0-3_2-0.0.2.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-5_0-3_2-0.0.3.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1
+arguments = $(ClusterId) $(ProcId) Signal_2-5_0-3_2-0.0.4.root
+Requirements = (OpSysAndVer == "AlmaLinux9")
+queue 1

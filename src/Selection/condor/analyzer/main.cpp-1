@@ -1,0 +1,107 @@
+#include <TChain.h>
+#include <TFile.h>
+#include "TClonesArray.h"
+#include "classes/DelphesClasses.h"
+#include <TInterpreter.h>
+ 
+#include <iostream>
+#include <vector>
+#include <string>
+#include <filesystem>
+ 
+#include "xs_map.hpp"
+#include "object_selection.hpp"
+#include "event_selection.hpp"
+#include "main.hpp"
+ 
+// ============================================================
+// 버전 선택 (컴파일 타임)
+// Makefile에서: -DSEL_VERSION=1 또는 -DSEL_VERSION=2
+// default: v2 (CMS 스타일)
+// ============================================================
+#ifndef SEL_VERSION
+#define SEL_VERSION 2
+#endif
+ 
+// ============================================================
+// Branch 초기화 헬퍼
+// ============================================================
+struct Branches {
+    TClonesArray* jet        = nullptr;
+    TClonesArray* electron   = nullptr;
+    TClonesArray* muon       = nullptr;
+    TClonesArray* missingET  = nullptr;
+};
+ 
+inline Branches SetupBranches(TChain& chain) {
+    Branches b;
+    chain.SetBranchAddress("Jet",       &b.jet);
+    chain.SetBranchAddress("Electron",  &b.electron);
+    chain.SetBranchAddress("Muon",      &b.muon);
+    chain.SetBranchAddress("MissingET", &b.missingET);
+    return b;
+}
+ 
+// ============================================================
+// Main
+// ============================================================
+int main(int argc, char** argv) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0]
+                  << " file1.root [file2.root ...]\n";
+        return 1;
+    }
+ 
+    // ── 입력 파일 / sample name / XS ──
+    std::vector<std::string> files;
+    for (int i = 1; i < argc; ++i) files.push_back(argv[i]);
+ 
+    auto xs_map          = BuildXSMap();
+    std::string sample_name = ExtractSampleName(files[0]);
+    SampleInfo  xs_info     = LookupXS(sample_name, xs_map);
+ 
+    std::cout << "[INFO] Sample  : " << sample_name << "\n";
+    std::cout << "[INFO] XS [pb] : " << std::scientific << std::setprecision(6)
+              << xs_info.xsec << " +- " << xs_info.xsec_unc << "\n";
+    std::cout << "[INFO] SEL_VERSION : v" << SEL_VERSION << "\n";
+ 
+    // ── TChain 설정 ──
+    TChain chain("Delphes");
+    for (auto& f : files) chain.Add(f.c_str());
+    auto br = SetupBranches(chain);
+ 
+    Long64_t n_total = chain.GetEntries();
+    double   weight  = CalcWeight(xs_info.xsec, n_total);
+    std::cout << "[INFO] N_total : " << n_total << "\n";
+    std::cout << "[INFO] Weight  : " << std::scientific << weight << "\n";
+ 
+    // ── Event Selection 실행 (버전 스위치) ──
+    EventSelResult result;
+    std::vector<std::string> cut_names;
+    std::vector<Long64_t>    counts;
+ 
+#if SEL_VERSION == 1
+    result    = EvtSel::v1::Run(chain, br.jet, br.electron, br.muon, br.missingET);
+    cut_names = EvtSel::v1::CutNames();
+    counts    = EvtSel::v1::GetCounts(result);
+#elif SEL_VERSION == 2
+    result    = EvtSel::v2::Run(chain, br.jet, br.electron, br.muon, br.missingET);
+    cut_names = EvtSel::v2::CutNames();
+    counts    = EvtSel::v2::GetCounts(result);
+#elif SEL_VERSION == 21    
+    result    = EvtSel::v21::Run(chain, br.jet, br.electron, br.muon, br.missingET);
+    cut_names = EvtSel::v21::CutNames();
+    counts    = EvtSel::v21::GetCounts(result);
+#else
+    std::cout << "[WARN] SEL_VERSION WARN, EXIT << "\n";
+#endif
+ 
+    // ── CutFlow 빌드 / 출력 / 저장 ──
+    auto cf = BuildCutFlow(cut_names, counts, weight);
+    PrintCutFlow(cf, sample_name, xs_info, result.version);
+    WriteCSV(cf, sample_name, xs_info, n_total, weight, result.version);
+ 
+    return 0;
+}
+
+

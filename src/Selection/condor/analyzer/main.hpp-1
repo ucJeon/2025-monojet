@@ -1,0 +1,129 @@
+#pragma once
+// cutflow.hpp
+// CutFlow 결과 → CSV / stdout 출력 유틸리티
+// XS/efficiency 계산 포함
+// ============================================================
+
+#include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include "xs_map.hpp"
+#include "event_selection.hpp"
+
+// ============================================================
+// per-cut 출력 행
+// ============================================================
+struct CutFlowRow {
+    std::string cut_name;
+    Long64_t    n_raw;
+    double      n_weighted;  // n_raw * xsec / N_generated
+    double      eff_abs;     // n_raw / N_generated
+    double      eff_rel;     // n_raw / n_raw_prev
+};
+
+// ============================================================
+// CutFlowRow 벡터 생성
+// ============================================================
+inline std::vector<CutFlowRow> BuildCutFlow(
+        const std::vector<std::string>& cut_names,
+        const std::vector<Long64_t>&    counts,
+        double                          weight) {
+
+    std::vector<CutFlowRow> cf;
+    Long64_t n_gen = (counts.empty()) ? 1 : counts[0];
+
+    for (size_t i = 0; i < cut_names.size(); ++i) {
+        CutFlowRow row;
+        row.cut_name   = cut_names[i];
+        row.n_raw      = counts[i];
+        row.n_weighted = counts[i] * weight;
+        row.eff_abs    = (n_gen > 0) ? (double)counts[i] / n_gen : 0.;
+        row.eff_rel    = (i == 0 || counts[i-1] == 0)
+                         ? 1.0
+                         : (double)counts[i] / counts[i-1];
+        cf.push_back(row);
+    }
+    return cf;
+}
+
+// ============================================================
+// stdout 출력
+// ============================================================
+inline void PrintCutFlow(const std::vector<CutFlowRow>& cf,
+                         const std::string& sample_name,
+                         const SampleInfo&  xs_info,
+                         const std::string& version) {
+    std::cout << "\n";
+    std::cout << "========================================\n";
+    std::cout << " Sample  : " << sample_name << "\n";
+    std::cout << " Version : " << version     << "\n";
+    std::cout << " XS [pb] : " << std::scientific << std::setprecision(4)
+              << xs_info.xsec << " ± " << xs_info.xsec_unc << "\n";
+    std::cout << "========================================\n";
+    std::cout << std::left  << std::setw(14) << "cut"
+              << std::right << std::setw(12) << "n_raw"
+              << std::right << std::setw(16) << "n_weighted"
+              << std::right << std::setw(10) << "eff_abs"
+              << std::right << std::setw(10) << "eff_rel"
+              << "\n";
+    std::cout << std::string(62, '-') << "\n";
+    for (auto& r : cf) {
+        std::cout << std::left  << std::setw(14) << r.cut_name
+                  << std::right << std::setw(12) << r.n_raw
+                  << std::right << std::setw(16) << std::fixed
+                                << std::setprecision(2) << r.n_weighted
+                  << std::right << std::setw(10) << std::fixed
+                                << std::setprecision(4) << r.eff_abs
+                  << std::right << std::setw(10) << std::fixed
+                                << std::setprecision(4) << r.eff_rel
+                  << "\n";
+    }
+    std::cout << "\n";
+}
+
+// ============================================================
+// CSV 저장
+// 출력 파일명: cutflow_<sample>_<version>.csv
+// ============================================================
+inline void WriteCSV(const std::vector<CutFlowRow>& cf,
+                     const std::string& sample_name,
+                     const SampleInfo&  xs_info,
+                     Long64_t           n_generated,
+                     double             weight,
+                     const std::string& version) {
+
+    std::string out_path = "cutflow_" + sample_name + "_" + version + ".csv";
+    std::ofstream ofs(out_path);
+    if (!ofs.is_open()) {
+        std::cerr << "[ERROR] Cannot open: " << out_path << "\n";
+        return;
+    }
+
+    // meta block
+    ofs << "# sample_name,"       << sample_name   << "\n";
+    ofs << "# sel_version,"       << version        << "\n";
+    ofs << "# xsec_pb,"           << std::scientific << std::setprecision(8)
+                                   << xs_info.xsec   << "\n";
+    ofs << "# xsec_unc_pb,"       << xs_info.xsec_unc << "\n";
+    ofs << "# n_generated,"       << n_generated    << "\n";
+    ofs << "# weight_per_event,"  << weight         << "\n";
+    ofs << "#\n";
+
+    // column header
+    ofs << "cut,n_raw,n_weighted,eff_abs,eff_rel\n";
+
+    // data
+    for (auto& r : cf) {
+        ofs << r.cut_name << ","
+            << r.n_raw    << ","
+            << std::fixed << std::setprecision(4) << r.n_weighted << ","
+            << std::fixed << std::setprecision(6) << r.eff_abs    << ","
+            << std::fixed << std::setprecision(6) << r.eff_rel    << "\n";
+    }
+
+    ofs.close();
+    std::cout << "[INFO] CSV saved: " << out_path << "\n";
+}

@@ -1,0 +1,237 @@
+#pragma once
+// event_selection.hpp
+// Event-level selection 모듈
+//
+// [버전 구조]
+//   namespace EvtSel::v1  ←  기존 5단계 (원본 코드)
+//   namespace EvtSel::v2  ←  CMS 스타일 7단계
+//
+// [새 버전 추가 방법]
+//   1. namespace EvtSel::v3 { ... } 블록 추가
+//   2. EventSelResult에 필요한 카운터 추가
+//   3. main에서 RunEventSelection = EvtSel::v3::Run 으로 스위치
+// ============================================================
+
+#include <vector>
+#include <string>
+#include <cmath>
+#include "object_selection.hpp"
+
+// ============================================================
+// 공통: 이벤트 루프 결과 (cut별 raw count)
+// 버전마다 사용하는 카운터가 다를 수 있으므로 전부 보유
+// ============================================================
+struct EventSelResult {
+    // ---- 공통 ----
+    Long64_t n_generated = 0;
+
+    // ---- v1 (5단계) ----
+    Long64_t n_lep       = 0;  // lepton veto
+    Long64_t n_ujet      = 0;  // nQJet >= 1 (v1: !isB && pT>150)
+    Long64_t n_qjet      = 0;  // nBJet==1 && nQJet==1
+    Long64_t n_met       = 0;  // MET > 150
+    Long64_t n_sel       = 0;  // 최종 (= n_met in v1)
+
+    // ---- v2 추가 단계 ----
+    Long64_t n_ge1_qjet  = 0;  // ≥1 qjet (overlap 제거 후)
+    Long64_t n_eq1_qjet  = 0;  // ==1 qjet
+    Long64_t n_eq1_bjet  = 0;  // ==1 bjet (qjet과 독립)
+    // n_met, n_sel 공용
+
+    // ---- 버전 태그 ----
+    std::string version;
+};
+
+// ============================================================
+// namespace EvtSel::v1
+// 기존 5단계: generated → lveto → ujet → qjet → met → sel
+// Object selection (isB/isQ coupling) 포함
+// ============================================================
+namespace EvtSel {
+namespace v1 {
+
+    // cut 이름 목록 (CSV 헤더용)
+    inline std::vector<std::string> CutNames() {
+        return {"generated", "l_veto", "ujet", "qjet", "met", "sel"};
+    }
+
+    // cut별 raw count 벡터 반환 (CutNames()와 순서 일치)
+    inline std::vector<Long64_t> GetCounts(const EventSelResult& r) {
+        return {r.n_generated, r.n_lep, r.n_ujet,
+                r.n_qjet, r.n_met, r.n_sel};
+    }
+
+    // 이벤트 루프 실행
+    inline EventSelResult Run(TChain& chain,
+                               TClonesArray* branchJet,
+                               TClonesArray* branchElec,
+                               TClonesArray* branchMuon,
+                               TClonesArray* branchMissingET) {
+        EventSelResult res;
+        res.version      = "v1";
+        res.n_generated  = chain.GetEntries();
+
+        for (Long64_t ievt = 0; ievt < res.n_generated; ++ievt) {
+            chain.GetEntry(ievt);
+
+            // (1) Lepton veto
+            auto lep = ObjSel::v1::CountVetoLeptons(branchElec, branchMuon, branchJet);
+            if (lep.nTotal() != 0) continue;
+            ++res.n_lep;
+
+            // (2) Jet sel: bjet/qjet coupled
+            auto jets = ObjSel::v1::SelectJets(branchJet);
+            if (jets.qjets.size() >= 1) ++res.n_ujet;
+            if (jets.bjets.size() != 1 || jets.qjets.size() != 1) continue;
+            ++res.n_qjet;
+
+            // (3) MET > 150
+            auto met = ObjSel::v1::GetMET(branchMissingET);
+            if (met.pt <= 150.f) continue;
+            ++res.n_met;
+
+            ++res.n_sel;
+        }
+        return res;
+    }
+
+} // namespace v1
+
+// ============================================================
+// namespace EvtSel::v2
+// CMS 스타일 7단계:
+//   generated → l_veto → ≥1 qjet → ==1 qjet → ==1 bjet → met → sel
+//
+// 변경점 vs v1:
+//   - Object sel (SelectBJets/SelectQJets) 완전 분리
+//   - qjet에서 bjet overlap 명시적 제거
+//   - ≥1 qjet 단계 추가 (acceptance 확인용)
+//   - ==1 qjet / ==1 bjet 을 독립 단계로 분리
+// ============================================================
+namespace v2 {
+
+    inline std::vector<std::string> CutNames() {
+        return {"generated", "l_veto",
+                "ge1_qjet", "eq1_qjet", "eq1_bjet",
+                "met", "sel"};
+    }
+
+    inline std::vector<Long64_t> GetCounts(const EventSelResult& r) {
+        return {r.n_generated, r.n_lep,
+                r.n_ge1_qjet, r.n_eq1_qjet, r.n_eq1_bjet,
+                r.n_met, r.n_sel};
+    }
+
+    inline EventSelResult Run(TChain& chain,
+                               TClonesArray* branchJet,
+                               TClonesArray* branchElec,
+                               TClonesArray* branchMuon,
+                               TClonesArray* branchMissingET) {
+        EventSelResult res;
+        res.version     = "v2";
+        res.n_generated = chain.GetEntries();
+
+        for (Long64_t ievt = 0; ievt < res.n_generated; ++ievt) {
+            chain.GetEntry(ievt);
+
+            // ── Object Selection (이벤트와 무관하게 object list 생성) ──
+            auto lep   = ObjSel::v2::CountVetoLeptons(branchElec, branchMuon, branchJet);
+            auto bjets = ObjSel::v2::SelectBJets(branchJet);
+            auto qjets_raw = ObjSel::v2::SelectQJets(branchJet);
+            auto qjets = ObjSel::v2::RemoveBJetOverlap(qjets_raw, bjets);
+            auto met   = ObjSel::v2::GetMET(branchMissingET);
+
+            // ── Event Selection (object list 개수/토폴로지 조건) ──
+
+            // (1) Lepton veto
+            if (lep.nTotal() != 0) continue;
+            ++res.n_lep;
+
+            // (2) ≥1 qjet (acceptance 체크용)
+            if (qjets.empty()) continue;
+            ++res.n_ge1_qjet;
+
+            // (3) ==1 qjet
+            if (qjets.size() != 1) continue;
+            ++res.n_eq1_qjet;
+
+            // (4) ==1 bjet (qjet 조건과 독립)
+            if (bjets.size() != 1) continue;
+            ++res.n_eq1_bjet;
+
+            // (5) MET > 150 GeV
+            if (met.pt <= 150.f) continue;
+            ++res.n_met;
+
+            ++res.n_sel;
+        }
+        return res;
+    }
+
+} // namespace v2
+
+// ============================================================
+// namespace EvtSel::v21
+// CMS 스타일 7단계:
+//   generated → l_veto → ≥1 qjet → >= bjet → met → sel
+// ============================================================
+namespace v21 {
+
+    inline std::vector<std::string> CutNames() {
+        return {"generated", "l_veto",
+                "ge1_qjet", "eq1_qjet", "eq1_bjet",
+                "met", "sel"};
+    }
+
+    inline std::vector<Long64_t> GetCounts(const EventSelResult& r) {
+        return {r.n_generated, r.n_lep,
+                r.n_ge1_qjet, r.n_eq1_qjet, r.n_eq1_bjet,
+                r.n_met, r.n_sel};
+    }
+
+    inline EventSelResult Run(TChain& chain,
+                               TClonesArray* branchJet,
+                               TClonesArray* branchElec,
+                               TClonesArray* branchMuon,
+                               TClonesArray* branchMissingET) {
+        EventSelResult res;
+        res.version     = "v2";
+        res.n_generated = chain.GetEntries();
+
+        for (Long64_t ievt = 0; ievt < res.n_generated; ++ievt) {
+            chain.GetEntry(ievt);
+
+            // ── Object Selection (이벤트와 무관하게 object list 생성) ──
+            auto lep   = ObjSel::v2::CountVetoLeptons(branchElec, branchMuon, branchJet);
+            auto bjets = ObjSel::v2::SelectBJets(branchJet);
+            auto qjets_raw = ObjSel::v2::SelectQJets(branchJet);
+            auto qjets = ObjSel::v2::RemoveBJetOverlap(qjets_raw, bjets);
+            auto met   = ObjSel::v2::GetMET(branchMissingET);
+
+            // ── Event Selection (object list 개수/토폴로지 조건) ──
+
+            // (1) Lepton veto
+            if (lep.nTotal() != 0) continue;
+            ++res.n_lep;
+
+            // (2) ≥1 qjet (acceptance 체크용)
+            if (qjets.empty()) continue;
+            ++res.n_ge1_qjet;
+            ++res.n_eq1_qjet; // 무조건 만족
+
+            // (4) >=1 bjet (qjet 조건과 독립)
+            if (bjets.empty()) continue;
+            ++res.n_eq1_bjet;
+
+            // (5) MET > 150 GeV
+            if (met.pt <= 150.f) continue;
+            ++res.n_met;
+
+            ++res.n_sel;
+        }
+        return res;
+    }
+
+} // namespace v21
+
+} // namespace EvtSel
