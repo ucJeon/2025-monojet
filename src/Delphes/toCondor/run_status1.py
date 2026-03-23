@@ -64,14 +64,16 @@ def run(input_file, output_file, process, full_target, main_path):
     # 1. 출력 파일 혹시 있으면 삭제 (안전장치)
     # ----------------------------------------------------------
     print("\n===== 1. 출력 파일 사전 삭제 =====")
-    hdfs_output = output_file.replace("/hdfs/", "/")
+    # hdfs_output = output_file.replace("/hdfs/", "/")
+    hdfs_output = output_file
     subprocess.call(["hdfs", "dfs", "-rm", "-f", hdfs_output])
 
     # ----------------------------------------------------------
     # 2. 입력 HepMC 파일 가져오기
     # ----------------------------------------------------------
     print("\n===== 2. HepMC get =====")
-    hdfs_input = input_file.replace("/hdfs/", "/")
+    # hdfs_input = input_file.replace("/hdfs/", "/")
+    hdfs_input = input_file
     ret = subprocess.call(["hdfs", "dfs", "-get", hdfs_input, "."])
     if ret != 0:
         print(f"[ERROR] hdfs get 실패: {hdfs_input}")
