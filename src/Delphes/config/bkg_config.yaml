@@ -1,0 +1,68 @@
+# ==============================
+# Delphes Step - Background Config
+# ==============================
+job:
+  name_base: monojetDelphesStep
+  work_dir: /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes
+
+paths:
+  #input_parent:  /hdfs/user/ujeon/monojet/HepMC
+  input_parent:  /user/ujeon/monojet/HepMC
+  #output_parent: /hdfs/user/ujeon/monojet/mc
+  output_parent: /user/ujeon/monojet/mc
+
+samples:
+  ttbar:
+    - version: v1.1.0
+      indices: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      process: {min: 0, max: 149}
+
+  wjets:
+    - version: v1.1.0
+      indices: [1, 2, 3, 4, 5, 6, 7, 8]
+      process: {min: 0, max: 149}
+
+  zjets:
+    - version: v1.1.0
+      indices: [1, 2, 3, 4, 5, 6, 7, 8]
+      process: {min: 0, max: 149}
+
+  zz4l:
+    - version: v1.1.0
+      indices: [0]
+      process: {min: 0, max: 499}
+
+  ww2l2v:
+    - version: v1.1.0
+      indices: [0]
+      process: {min: 0, max: 499}
+
+  wz3l1v:  # ww3l1v인지 wz인지 확인 필요
+    - version: v1.1.0
+      indices: [0]
+      process: {min: 0, max: 499}
+
+  wwlv2q:
+    - version: v1.1.0
+      indices: [1, 2, 3, 4, 5, 6, 7]
+      process: {min: 0, max: 99}
+    - version: v1.2.0
+      indices: [8, 9]
+      process: {min: 0, max: 2}
+
+  wz2l2q:
+    - version: v1.1.0
+      indices: [1, 2, 3, 4, 5, 6, 7]
+      process: {min: 0, max: 99}
+    - version: v1.2.0
+      indices: [8, 9]
+      process: {min: 0, max: 2}
+
+  wzlv2q:
+    - version: v1.1.0
+      indices: [1, 2, 3, 4, 5, 6, 7]
+      process: {min: 0, max: 99}
+    - version: v1.2.0
+      indices: [8, 9]
+      process: {min: 0, max: 2}
+

@@ -1,0 +1,61 @@
+executable            = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/exe.sh
+getenv                = True
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/toCondor
+
+# --- wjets.1 ---
+environment = "job_name=monojetDelphesStep.wjets.1 sample_name=wjets version=v1.1.0 full_target=wjets.1 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.1.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.1.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.1.err
+Queue 1
+
+# --- wjets.2 ---
+environment = "job_name=monojetDelphesStep.wjets.2 sample_name=wjets version=v1.1.0 full_target=wjets.2 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.2.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.2.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.2.err
+Queue 1
+
+# --- wjets.3 ---
+environment = "job_name=monojetDelphesStep.wjets.3 sample_name=wjets version=v1.1.0 full_target=wjets.3 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.3.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.3.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.3.err
+Queue 1
+
+# --- wjets.4 ---
+environment = "job_name=monojetDelphesStep.wjets.4 sample_name=wjets version=v1.1.0 full_target=wjets.4 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.4.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.4.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.4.err
+Queue 1
+
+# --- wjets.5 ---
+environment = "job_name=monojetDelphesStep.wjets.5 sample_name=wjets version=v1.1.0 full_target=wjets.5 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.5.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.5.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.5.err
+Queue 1
+
+# --- wjets.6 ---
+environment = "job_name=monojetDelphesStep.wjets.6 sample_name=wjets version=v1.1.0 full_target=wjets.6 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.6.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.6.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.6.err
+Queue 1
+
+# --- wjets.7 ---
+environment = "job_name=monojetDelphesStep.wjets.7 sample_name=wjets version=v1.1.0 full_target=wjets.7 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.7.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.7.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.7.err
+Queue 1
+
+# --- wjets.8 ---
+environment = "job_name=monojetDelphesStep.wjets.8 sample_name=wjets version=v1.1.0 full_target=wjets.8 input_parent=/user/ujeon/monojet/HepMC output_parent=/user/ujeon/monojet/mc main_path=/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes process_min=0 process_max=0 is_test=1"
+log    = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.8.log
+output = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.8.out
+error  = /users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Delphes/logs/monojetDelphesStep.wjets.8.err
+Queue 1
