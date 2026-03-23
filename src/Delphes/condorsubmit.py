@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#if args.sample:
+!/usr/bin/env python3
 # ==============================================================
 # condorsubmit.py
 # Delphes Step - HTCondor Job Submitter
@@ -187,9 +188,13 @@ def main():
     # 2. job 목록 생성
     jobs = expand_samples(config)
 
-    # 특정 샘플 필터
     if args.sample:
-        jobs = [j for j in jobs if j["sample_name"] == args.sample]
+        # wjets.1 형식도 지원
+        if "." in args.sample:
+            sname, sidx = args.sample.rsplit(".", 1)
+            jobs = [j for j in jobs if j["sample_name"] == sname and str(j["index"]) == sidx]
+        else:
+            jobs = [j for j in jobs if j["sample_name"] == args.sample]
         if not jobs:
             print(f"[ERROR] sample '{args.sample}' 이 config에 없음")
             sys.exit(1)
