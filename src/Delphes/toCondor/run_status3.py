@@ -27,7 +27,8 @@ if __name__ == "__main__":
     args = parse_args()
 
     # 1. 깨진 출력 파일 삭제
-    hdfs_output = args.output_file.replace("/hdfs/", "/")
+    # hdfs_output = args.output_file.replace("/hdfs/", "/")
+    hdfs_output = args.output_file
     print(f"[INFO] 출력 파일 삭제: {hdfs_output}")
     ret = subprocess.call(["hdfs", "dfs", "-rm", "-f", hdfs_output])
     if ret != 0:
