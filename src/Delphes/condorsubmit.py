@@ -164,6 +164,12 @@ def parse_args():
         action="store_true",
         help="테스트 모드 → exe.sh에서 파일 조회만 하고 실제 작업 수행 안 함"
     )
+    parser.add_argument(
+        "--max",
+        type=int,
+        default=None,
+        help="최대 process ID (inclusive). 미지정시 config 기준"
+    )
     return parser.parse_args()
 
 
@@ -188,12 +194,16 @@ def main():
             print(f"[ERROR] sample '{args.sample}' 이 config에 없음")
             sys.exit(1)
 
-    # ↓ 여기 추가
     if args.test:
         for j in jobs:
             j["process_min"] = 0
             j["process_max"] = 0
 
+    # ↓ 추가 (test와 독립적으로 동작)
+    if args.max is not None:
+        for j in jobs:
+            j["process_max"] = min(j["process_max"], args.max)
+    
     print(f"[INFO] config     : {args.config}")
     print(f"[INFO] work_dir   : {work_dir}")
     print(f"[INFO] total jobs : {len(jobs)}")
