@@ -27,7 +27,8 @@ if __name__ == "__main__":
     args = parse_args()
 
     # 1. recopy
-    hdfs_input = args.input_file.replace("/hdfs/", "/")
+    # hdfs_input = args.input_file.replace("/hdfs/", "/")
+    hdfs_input = args.input_file
     run_recopy.run(hdfs_path=hdfs_input)
 
     # 2. Delphes 작업 수행 (run_status1 재활용)
