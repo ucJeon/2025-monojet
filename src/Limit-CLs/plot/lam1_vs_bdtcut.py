@@ -22,7 +22,7 @@ from scipy.interpolate import interp1d
 BDT_CUT_BASE = "/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/BDT_cut/out"
 LIMIT_BASE   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
-REF_LAM2  = "0-15"
+REF_LAM2  = "0-5"
 LUMI_LIST = [300, 3000]
 MX1_LIST  = ["1-0", "1-5", "2-0", "2-5"]
 

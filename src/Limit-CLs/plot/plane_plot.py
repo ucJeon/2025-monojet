@@ -42,7 +42,7 @@ LOG_CONTOUR_FONTSIZE = 7    # clabel 폰트 크기, None 이면 표시 안 함
 
 # --- output ---
 OUTPUT_DIR    = "limit_plots/planes"
-DPI           = 150
+DPI           = 600
 
 # ============================================================
 
@@ -172,6 +172,7 @@ def plot_all_planes(plot_points: list,
     """
     for lumi, mx1, csv_path in plot_points:
         print(f"\n[PLANE] lumi={lumi}, mx1={mx1}, csv={csv_path}")
+        print(f"[DBG] csv_path: {csv_path} @ plot_all_planes")
         df = pd.read_csv(csv_path)
         plot_plane(df, mx1=mx1, lumi=lumi,
                    summary_csv=summary_csv, col=col,

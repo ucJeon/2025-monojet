@@ -46,6 +46,7 @@ def build_plot_points(version: str, ntree: int, maxdepth: int, cut: float) -> li
     for lumi in LUMI_LIST:
         for mx1 in MX1_LIST:
             csv_path = os.path.join(bdt_dir, f"sig_lumi{lumi}_mx1{mx1}.csv")
+            print(f"[DBG] {csv_path}")
             if not os.path.isfile(csv_path):
                 print(f"[WARN] not found: {csv_path}")
                 continue
