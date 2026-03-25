@@ -46,7 +46,6 @@ def build_plot_points(version: str, ntree: int, maxdepth: int, cut: float) -> li
     for lumi in LUMI_LIST:
         for mx1 in MX1_LIST:
             csv_path = os.path.join(bdt_dir, f"sig_lumi{lumi}_mx1{mx1}.csv")
-            print(f"[DBG] {csv_path}")
             if not os.path.isfile(csv_path):
                 print(f"[WARN] not found: {csv_path}")
                 continue
@@ -70,6 +69,8 @@ def main():
                         help="lam1_critical vs BDT cut figure (2개)")
     parser.add_argument("--all",      action="store_true",
                         help="planes + limits + lam1plot 전부")
+    parser.add_argument("--mode",     default="asymptotic", choices=["asymptotic", "full"],
+                        help="which mode to use for s_up (default: asymptotic)")
     parser.add_argument("--show",     action="store_true")
     args = parser.parse_args()
 
@@ -113,7 +114,9 @@ def main():
             print("[WARN] no sig CSV found for planes. skipping.")
         else:
             print("\n[PLANE] plotting planes ...")
-            plot_all_planes(plot_points, summary_csv=summary_csv, show=args.show)
+            plot_all_planes(plot_points, summary_csv=summary_csv,
+                             version=args.version, ntree=args.ntree, maxdepth=args.maxdepth,
+                             cut=args.cut, mode=args.mode, show=args.show)
 
     # ---- limits ----
     if do_limits:
@@ -122,7 +125,9 @@ def main():
             print("[WARN] no sig CSV found for limits. skipping.")
         else:
             print("\n[LIMIT] plotting limits ...")
-            plot_all_limits(plot_points, summary_csv=summary_csv, show=args.show)
+            plot_all_limits(plot_points, summary_csv=summary_csv,
+                             version=args.version, ntree=args.ntree, maxdepth=args.maxdepth,
+                             cut=args.cut, mode=args.mode, show=args.show)
 
     # ---- lam1 vs bdtcut ----
     if do_lam1plot:
