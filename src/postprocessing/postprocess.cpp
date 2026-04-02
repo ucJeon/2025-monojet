@@ -33,9 +33,12 @@
 #include <algorithm>
 
 #include <optional>
+#include <sstream>
+#include <set>
 
 namespace fs = std::filesystem;
 
+static const std::vector<std::string> SIG_GRID = {"0-1", "0-3", "0-5"};
 // ============================================================
 // 1. 파일명 파싱
 //    sel_{sample_key}.{parallel}_{version}.root
@@ -98,6 +101,136 @@ GroupFiles(const std::string& in_dir, const std::string& version) {
 
     return groups;
 }
+static std::vector<std::string> BuildExpectedSamples() {
+    std::vector<std::string> expected;
+
+    // background
+    expected.push_back("ttbar");
+    expected.push_back("wjets");
+    expected.push_back("zjets");
+    expected.push_back("zz4l");
+    expected.push_back("ww2l2v");
+    expected.push_back("wz3l1v");
+    expected.push_back("wwlv2q");
+    expected.push_back("wz2l2q");
+    expected.push_back("wzlv2q");
+
+    // signal masses 예시
+    const std::vector<std::string> masses = {"1-0", "1-5", "2-0", "2-5"};
+
+    for (const auto& mx : masses) {
+        for (const auto& lam1 : SIG_GRID) {
+            for (const auto& lam2 : SIG_GRID) {
+                expected.push_back("Signal_" + mx + "_" + lam1 + "_" + lam2 + ".0");
+            }
+        }
+    }
+
+    return expected;
+}
+void PrintInputInventoryAndCheckMissing(
+    const std::map<std::string, std::vector<ParsedFile>>& groups
+) {
+    std::cout << "\n================ Input Inventory ================\n";
+
+    Long64_t grand_total_files = 0;
+
+    for (const auto& [sample_key, files] : groups) {
+        std::cout << "[FOUND] " << sample_key
+                  << " : " << files.size() << " file(s) | parallel = ";
+
+        for (size_t i = 0; i < files.size(); ++i) {
+            std::cout << files[i].parallel;
+            if (i + 1 != files.size()) std::cout << ",";
+        }
+        std::cout << "\n";
+
+        grand_total_files += files.size();
+    }
+
+    std::cout << "-------------------------------------------------\n";
+    std::cout << "[SUMMARY] grouped samples = " << groups.size()
+              << ", total input files = " << grand_total_files << "\n";
+
+    auto expected = BuildExpectedSamples();
+
+    std::set<std::string> found_keys;
+    for (const auto& [sample_key, _] : groups) {
+        found_keys.insert(sample_key);
+    }
+
+    std::vector<std::string> missing;
+    for (const auto& key : expected) {
+        if (!found_keys.count(key)) missing.push_back(key);
+    }
+
+    std::cout << "-------------------------------------------------\n";
+    if (missing.empty()) {
+        std::cout << "[CHECK] No missing expected samples.\n";
+    } else {
+        std::cout << "[CHECK] Missing expected samples: " << missing.size() << "\n";
+        for (const auto& key : missing) {
+            std::cout << "  [MISSING] " << key << "\n";
+        }
+    }
+
+    std::cout << "=================================================\n\n";
+}
+std::map<std::string, std::vector<int>> BuildExpectedParallelMap() {
+    std::map<std::string, std::vector<int>> mp;
+
+    mp["ttbar"] = {1,2,3,4,5,6,7,8,9};
+    mp["wjets"] = {1,2,3,4,5,6,7,8};
+    mp["zjets"] = {1,2,3,4,5,6,7,8};
+
+    mp["zz4l"]   = {0};
+    mp["ww2l2v"] = {0};
+    mp["wz3l1v"] = {0};
+
+    mp["wwlv2q"] = {1,2,3,4,5,6,7,8,9};
+    mp["wz2l2q"] = {1,2,3,4,5,6,7,8,9};
+    mp["wzlv2q"] = {1,2,3,4,5,6,7,8,9};
+
+    return mp;
+}
+void CheckMissingParallelIndices(
+    const std::map<std::string, std::vector<ParsedFile>>& groups
+) {
+    auto expected_map = BuildExpectedParallelMap();
+
+    std::cout << "\n================ Parallel Check =================\n";
+
+    for (const auto& [sample_key, expected_indices] : expected_map) {
+        auto it = groups.find(sample_key);
+        if (it == groups.end()) {
+            std::cout << "[SKIP] " << sample_key << " : sample itself missing\n";
+            continue;
+        }
+
+        std::set<int> found;
+        for (const auto& pf : it->second) {
+            found.insert(std::stoi(pf.parallel));
+        }
+
+        std::vector<int> missing;
+        for (int idx : expected_indices) {
+            if (!found.count(idx)) missing.push_back(idx);
+        }
+
+        if (missing.empty()) {
+            std::cout << "[OK] " << sample_key << " : no missing parallel index\n";
+        } else {
+            std::cout << "[WARN] " << sample_key << " : missing parallel = ";
+            for (size_t i = 0; i < missing.size(); ++i) {
+                std::cout << missing[i];
+                if (i + 1 != missing.size()) std::cout << ",";
+            }
+            std::cout << "\n";
+        }
+    }
+
+    std::cout << "=================================================\n\n";
+}
 
 static std::vector<std::string> Split(const std::string& s, char delim){
     std::vector<std::string> out;
@@ -118,7 +251,7 @@ static bool IsInSet(const std::string& x, const std::vector<std::string>& allowe
 }
 
 // 여기만 수정해서 signal grid 바꾸면 됨
-static const std::vector<std::string> SIG_GRID = {"0-1", "0-3", "0-5"};
+// static const std::vector<std::string> SIG_GRID = {"0-1", "0-3", "0-5"};
 
 static bool IsSignalSample(const std::string& sample_key){
     return sample_key.rfind("Signal_", 0) == 0;
@@ -163,7 +296,7 @@ struct SplitPlan {
 
 static const Long64_t TARGET_SIG_PER_SAMPLE = 80000;
 // static const double   BKG_BDT_FRAC = 0.8;
-static const double   BKG_BDT_FRAC = 0.7;
+static const double   BKG_BDT_FRAC = 0.5;
 
 SplitPlan MakeSplitPlan(const std::string& sample_key,
                         const std::vector<ParsedFile>& files) {
@@ -473,7 +606,10 @@ int main(int argc, char** argv) {
 
     auto groups = GroupFiles(in_dir, version);
     std::cout << "[INFO] " << groups.size() << " samples found in " << in_dir << "\n\n";
-
+    
+    PrintInputInventoryAndCheckMissing(groups);
+    CheckMissingParallelIndices(groups);
+ 
     if (!do_split) {
         for (auto& [sample_key, parsed_files] : groups) {
             std::vector<std::string> files;
