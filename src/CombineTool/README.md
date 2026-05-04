@@ -51,4 +51,20 @@ rate                     4638.0954           46929.5125
 ----------------------------------------------------------------------
 stat_bkg        lnN     -                   1.0120
 ```
+Note that if the line `observation 46930` is omitted in the `datacard` as input to Combine, you would see the warning `No observed data 'data_obs' in the workspace. Cannot compute limit.`.
+
+As a result it print-out the expected signal strength r
+```
+============================================================
+ lumi=300  mode=none
+============================================================
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_none.txt
+Expected  2.5%: r < 0.1574
+Expected 16.0%: r < 0.2100
+Expected 50.0%: r < 0.2920
+Expected 84.0%: r < 0.4072
+Expected 97.5%: r < 0.5443
+[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_none.txt
+```
+In above, `Expected 50.0%` r-value is used for calculating the upper limit on the parameter space.
 
