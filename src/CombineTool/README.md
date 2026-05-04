@@ -34,8 +34,15 @@ combine -M AsymptoticLimits $DC \
     -m 1000 \ # mX1 = 1.0 TeV = 1000 GeV, just for root file prefix
     --run expected
 ```
+For the `$mode` are considered as
+- none : without statistical uncertainties 
+- stats : with statistical uncertainties 
+- sys1 : + 10% signal cross-section uncertainty for signal side
+- sys2 : + 5% JES uncertainties for signal and background both side
+- sys3 : + 4% MET uncertainties for signal and background both side
+In detail, you can check the modes in the folder `datacards`
 
-where the datacard referenced by $DC in the example above has the following format:
+The datacard referenced by $DC in the example above has the following format (Run3 Lumi, $m_{X_1}$=1.0TeV, mode=stats):
 ```
 imax 1  number of channels
 jmax 1  number of backgrounds
@@ -53,18 +60,21 @@ stat_bkg        lnN     -                   1.0120
 ```
 Note that if the line `observation 46930` is omitted in the `datacard` as input to Combine, you would see the warning `No observed data 'data_obs' in the workspace. Cannot compute limit.`.
 
-As a result it print-out the expected signal strength r
+As a result, 
+- (1) it print-out the expected signal strength r
+- (2) and make root file names `higgsCombine.Lumi300.MX10.stats.AsymptoticLimits.mH1000.root`
 ```
+=============================================================
+ lumi=300  mode=stats
 ============================================================
- lumi=300  mode=none
-============================================================
-[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_none.txt
-Expected  2.5%: r < 0.1574
-Expected 16.0%: r < 0.2100
-Expected 50.0%: r < 0.2920
-Expected 84.0%: r < 0.4072
-Expected 97.5%: r < 0.5443
-[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_none.txt
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_stats.txt
+Expected  2.5%: r < 0.2031
+Expected 16.0%: r < 0.2699
+Expected 50.0%: r < 0.3740
+Expected 84.0%: r < 0.5201
+Expected 97.5%: r < 0.6913
 ```
 In above, `Expected 50.0%` r-value is used for calculating the upper limit on the parameter space.
+Following procedure, the root file is used for getting r-value
 
+> If use `observed` run mode instead of `expected` run mode, you can see the observed r value as `Observed Limit: r < 0.3749`
