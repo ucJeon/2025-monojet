@@ -115,7 +115,7 @@ It is performed in the `./result` folder. the results are processed by following
 | 2.0 | 0.072 | 0.139 |
 | 2.5 | 0.109 | 0.204 |
 
-[The examples contour plot mentioned](./plots_expected/limit_stats_lumi300.png)
+![The examples contour plot mentioned](./result/plots_expected/limit_stats_lumi300.png | 300)
 
 ### Converting r-value to coupling upper limit
 
