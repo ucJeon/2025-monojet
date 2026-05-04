@@ -62,7 +62,7 @@ Note that if the line `observation 46930` is omitted in the `datacard` as input 
 
 As a result, 
 - (1) it print-out the expected signal strength r
-- (2) and make root file names `higgsCombine.Lumi300.MX10.stats.AsymptoticLimits.mH1000.root`
+- (2) and make **output root file** names `higgsCombine.Lumi300.MX10.stats.AsymptoticLimits.mH1000.root`
 ```
 =============================================================
  lumi=300  mode=stats
@@ -75,7 +75,7 @@ Expected 84.0%: r < 0.5201
 Expected 97.5%: r < 0.6913
 ```
 In above, `Expected 50.0%` r-value is used for calculating the upper limit on the parameter space.
-Following procedure, the root file is used for getting r-value
+Following procedure, **the output root file** is used for getting r-value
 
 If use `observed` run mode instead of `expected` run mode, you can see the observed r value as
 ```
@@ -86,7 +86,36 @@ with `run_asymptotic_w-observed_card-all.sh` run script
 
 
 ## Analysis
-It is performed in the `./result` folder.
+It is performed in the `./result` folder. the results are processed by following procedures
+
+### Step1 (`run_step1.sh`)
+- `run_step1.sh` is run-script for `step1_make-table.py` which is make markdown style table.
+- Make `resultcard_expected.txt` as summary table
+- by parsing `median expected r` from **output root files**.
+- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹. 
+
+| $M_{X_1}$ [TeV] |  none  | stats  |  sys1  |  sys2  |  sys3  |
+| :-------------: | :----: | :----: | :----: | :----: | :----: |
+|       1.0       | 0.2920 | 0.3740 | 0.3809 | 1.1055 | 1.3984 |
+|       1.5       | 0.8086 | 0.9375 | 0.9531 | 1.3672 | 1.5859 |
+|       2.0       | 2.0078 | 2.2891 | 2.3203 | 2.6953 | 2.9141 |
+|       2.5       | 4.6094 | 5.1094 | 5.2031 | 5.5312 | 5.7344 |
+
+### Step2 (`run_step2.sh`)
+- `run_step2.sh` is run-script for `step2_plot-expected-contour.py` which is 
+- (1) print-out for $\lambda_{1}$ and $\lambda_{2}$ critical values when $\lambda_{i}$=0.5 and
+- (2) make contour plots in the folder `plots_expected` varying luminosity scenarios and uncertainty mode.
+- below tables are one of the example for the case of Run3 Luminosity and statistical uncertainty considered only
+- below figure is contour plot for the same case.
+
+| MX1 | lam1_crit (fixed lam2=0.5) | lam2_crit (fixed lam1=0.5) |
+|---|---|---|
+| 1.0 | <0.03 | 0.054 |
+| 1.5 | 0.043 | 0.088 |
+| 2.0 | 0.072 | 0.139 |
+| 2.5 | 0.109 | 0.204 |
+
+
 
 ### Converting r-value to coupling upper limit
 
