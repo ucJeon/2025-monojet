@@ -1,0 +1,16 @@
+imax 1  number of channels
+jmax 1  number of backgrounds
+kmax *
+----------------------------------------------------------------------
+bin         bin1
+observation 4693
+----------------------------------------------------------------------
+bin                      bin1                bin1                
+process                  sig                 bkg                 
+process                  0                   1                   
+rate                     463.8095            4692.9513           
+----------------------------------------------------------------------
+stat_bkg        lnN     -                   1.0120
+met_model       lnN     1.04                1.04
+jes             lnN     1.05                1.05
+xsec_sig        lnN     1.10                -

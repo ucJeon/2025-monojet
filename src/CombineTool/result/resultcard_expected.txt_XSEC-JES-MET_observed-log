@@ -1,0 +1,124 @@
+
+07:51:43 ujeon@gate CombineTool ±|main ✗|→ bash run_asymptotic_w-observed_card-all.sh
+
+============================================================
+ lumi=300  mode=none
+============================================================
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_none.txt
+Observed Limit: r < 0.2926
+[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_none.txt
+Observed Limit: r < 0.8054
+[RUN] ./datacards/datacard_lumi300_mx12-0_cut0p1440_none.txt
+Observed Limit: r < 1.9956
+[RUN] ./datacards/datacard_lumi300_mx12-5_cut0p1520_none.txt
+Observed Limit: r < 4.6954
+
+============================================================
+ lumi=300  mode=stats
+============================================================
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_stats.txt
+Observed Limit: r < 0.3749
+[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_stats.txt
+Observed Limit: r < 0.9355
+[RUN] ./datacards/datacard_lumi300_mx12-0_cut0p1440_stats.txt
+Observed Limit: r < 2.2735
+[RUN] ./datacards/datacard_lumi300_mx12-5_cut0p1520_stats.txt
+Observed Limit: r < 5.1872
+
+============================================================
+ lumi=300  mode=sys1
+============================================================
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_sys1.txt
+Observed Limit: r < 0.3814
+[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_sys1.txt
+Observed Limit: r < 0.9509
+[RUN] ./datacards/datacard_lumi300_mx12-0_cut0p1440_sys1.txt
+Observed Limit: r < 2.3070
+[RUN] ./datacards/datacard_lumi300_mx12-5_cut0p1520_sys1.txt
+Observed Limit: r < 5.2722
+
+============================================================
+ lumi=300  mode=sys2
+============================================================
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_sys2.txt
+Observed Limit: r < 1.1033
+[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_sys2.txt
+Observed Limit: r < 1.3649
+[RUN] ./datacards/datacard_lumi300_mx12-0_cut0p1440_sys2.txt
+Observed Limit: r < 2.6831
+[RUN] ./datacards/datacard_lumi300_mx12-5_cut0p1520_sys2.txt
+Observed Limit: r < 5.6067
+
+============================================================
+ lumi=300  mode=sys3
+============================================================
+[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_sys3.txt
+Observed Limit: r < 1.4014
+[RUN] ./datacards/datacard_lumi300_mx11-5_cut0p1350_sys3.txt
+Observed Limit: r < 1.5813
+[RUN] ./datacards/datacard_lumi300_mx12-0_cut0p1440_sys3.txt
+Observed Limit: r < 2.8980
+[RUN] ./datacards/datacard_lumi300_mx12-5_cut0p1520_sys3.txt
+Observed Limit: r < 5.8000
+
+============================================================
+ lumi=3000  mode=none
+============================================================
+[RUN] ./datacards/datacard_lumi3000_mx11-0_cut0p1050_none.txt
+Observed Limit: r < 2.0061
+[RUN] ./datacards/datacard_lumi3000_mx11-5_cut0p1350_none.txt
+Observed Limit: r < 0.2512
+[RUN] ./datacards/datacard_lumi3000_mx12-0_cut0p1440_none.txt
+Observed Limit: r < 0.6151
+[RUN] ./datacards/datacard_lumi3000_mx12-5_cut0p1520_none.txt
+Observed Limit: r < 1.3829
+
+============================================================
+ lumi=3000  mode=stats
+============================================================
+[RUN] ./datacards/datacard_lumi3000_mx11-0_cut0p1050_stats.txt
+Observed Limit: r < 2.0061
+[RUN] ./datacards/datacard_lumi3000_mx11-5_cut0p1350_stats.txt
+Observed Limit: r < 0.5351
+[RUN] ./datacards/datacard_lumi3000_mx12-0_cut0p1440_stats.txt
+Observed Limit: r < 1.2562
+[RUN] ./datacards/datacard_lumi3000_mx12-5_cut0p1520_stats.txt
+Observed Limit: r < 2.5894
+
+============================================================
+ lumi=3000  mode=sys1
+============================================================
+[RUN] ./datacards/datacard_lumi3000_mx11-0_cut0p1050_sys1.txt
+Observed Limit: r < 2.0061
+[RUN] ./datacards/datacard_lumi3000_mx11-5_cut0p1350_sys1.txt
+Observed Limit: r < 0.5446
+[RUN] ./datacards/datacard_lumi3000_mx12-0_cut0p1440_sys1.txt
+Observed Limit: r < 1.2793
+[RUN] ./datacards/datacard_lumi3000_mx12-5_cut0p1520_sys1.txt
+Observed Limit: r < 2.6315
+
+============================================================
+ lumi=3000  mode=sys2
+============================================================
+[RUN] ./datacards/datacard_lumi3000_mx11-0_cut0p1050_sys2.txt
+Observed Limit: r < 2.0061
+[RUN] ./datacards/datacard_lumi3000_mx11-5_cut0p1350_sys2.txt
+Observed Limit: r < 1.0953
+[RUN] ./datacards/datacard_lumi3000_mx12-0_cut0p1440_sys2.txt
+Observed Limit: r < 1.8083
+[RUN] ./datacards/datacard_lumi3000_mx12-5_cut0p1520_sys2.txt
+Observed Limit: r < 3.1104
+
+============================================================
+ lumi=3000  mode=sys3
+============================================================
+[RUN] ./datacards/datacard_lumi3000_mx11-0_cut0p1050_sys3.txt
+Observed Limit: r < 2.0061
+[RUN] ./datacards/datacard_lumi3000_mx11-5_cut0p1350_sys3.txt
+Observed Limit: r < 1.3498
+[RUN] ./datacards/datacard_lumi3000_mx12-0_cut0p1440_sys3.txt
+Observed Limit: r < 2.0930
+[RUN] ./datacards/datacard_lumi3000_mx12-5_cut0p1520_sys3.txt
+Observed Limit: r < 3.3871
+
+[ALL DONE]
