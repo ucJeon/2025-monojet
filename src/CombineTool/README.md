@@ -1,9 +1,11 @@
 # Higgs Combine Tool
-this directory 
+This directory contains the HiggsCombine setup and datacard-based limit-setting workflow.
 
-## HiggsCombine Tool Setup
+## Setup
 
-`CMSSW` is needed for this tasks.
+### HiggsCombine Tool Setup
+
+`CMSSW` is needed for this task.
 ```
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 cmsrel CMSSW_14_1_0_pre4
@@ -17,11 +19,11 @@ source /cvmfs/cms.cern.ch/cmsset_default.sh
 cmsenv
 ```
 
-## 
+## Running AsymptoticLimits
 
-Run `run_asymptotic_card-all.sh` to make output of AsymptoticLimits for getting upperlimit
+Run `run_asymptotic_card-all.sh` to compute AsymptoticLimits and obtain the expected upper limit on the signal strength r.
 
-For example, for the case of getting r value of mx1, stats only
+For example, to obtain the r-value upper limit for MX1 = 1.0 TeV with statistical uncertainty only:
 ```
 lumi=300 # Run3, 300 fb-1
 mode=stats # statistical uncertainty as gaussian constraint with log-normal are applied
@@ -33,7 +35,7 @@ combine -M AsymptoticLimits $DC \
     --run expected
 ```
 
-where datacards for `$DC` in above codes is
+where the datacard referenced by $DC in the example above has the following format:
 ```
 imax 1  number of channels
 jmax 1  number of backgrounds
