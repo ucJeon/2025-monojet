@@ -77,4 +77,8 @@ Expected 97.5%: r < 0.6913
 In above, `Expected 50.0%` r-value is used for calculating the upper limit on the parameter space.
 Following procedure, the root file is used for getting r-value
 
-> If use `observed` run mode instead of `expected` run mode, you can see the observed r value as `Observed Limit: r < 0.3749`
+If use `observed` run mode instead of `expected` run mode, you can see the observed r value as
+```
+Observed Limit: r < 0.3749
+```
+with `run_asymptotic_w-observed_card-all.sh` run script
