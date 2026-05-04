@@ -82,3 +82,7 @@ If use `observed` run mode instead of `expected` run mode, you can see the obser
 Observed Limit: r < 0.3749
 ```
 with `run_asymptotic_w-observed_card-all.sh` run script
+
+## Analysis
+It is performed in the `./result` folder.
+
