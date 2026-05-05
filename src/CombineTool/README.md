@@ -51,11 +51,11 @@ combine -M AsymptoticLimits $DC \
     --run expected
 ```
 For the `$mode` are considered as
-- none : without statistical uncertainties
-- stats : with statistical uncertainties
-- sys1 : + 10% signal cross-section uncertainty for signal side
-- sys2 : + 5% JES uncertainties for signal and background both side
-- sys3 : + 4% MET uncertainties for signal and background both side
+- none : without statistical uncertainties [(Run3 Lumi., none mode, $m_{X_1}=1.0~\mathrm{TeV}$)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_none.txt#L12)
+- stats : with statistical uncertainties [(Run3 Lumi., stats mode)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_stats.txt#L12)
+- sys1 : + 10% signal cross-section uncertainty for signal side [(Run3 Lumi., sys1 mode, $m_{X_1}=1.0~\mathrm{TeV}$)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys1.txt#L12)
+- sys2 : + 5% JES uncertainties for signal and background both side [(Run3 Lumi., sys2 mode, $m_{X_1}=1.0~\mathrm{TeV}$)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys2.txt#L12)
+- sys3 : + 4% MET uncertainties for signal and background both side [(Run3 Lumi., sys3 mode, $m_{X_1}=1.0~\mathrm{TeV}$)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys3.txt#L12)
 In detail, you can check the modes in the folder `datacards`
 
 The datacard referenced by $DC in the example above has the following format (Run3 Lumi, $m_{X_1}$=1.0TeV, mode=stats):
@@ -108,7 +108,7 @@ It is performed in the `./result` folder. the results are processed by following
 - `run_step1.sh` is run-script for `step1_make-table.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L304)
 - which makes `resultcard_expected.txt`[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/resultcard_expected.txt_XSEC-JES-MET#L4) as summary table (markdown-style table)
 - by parsing `median expected r` from **output root files**.
-- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all run-mode and $m_{X_1}$ mass-point with Run3 luminosity.
+- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all systematic scenarios and $m_{X_1}$ mass-point with Run3 luminosity.
 
 | $M_{X_1}$ [TeV] |  none  | stats  |  sys1  |  sys2  |  sys3  |
 | :-------------: | :----: | :----: | :----: | :----: | :----: |
@@ -211,8 +211,8 @@ by fixing one coupling at its reference value and scanning the other:
 
 | Slice       | Fixed    | Scanned | Interpolation                                         |
 | ----------- | -------- | ------- | ----------------------------------------------------- |
-| $\lambda_1$ critical | λ₂ = 0.5 | $\lambda_1$      | `interp1d($N_s$, $\lambda_1$)` → solve $N_s = N_s^\mathrm{excl}$ |
-| $\lambda_2$ critical | λ₁ = 0.5 | $\lambda_2$      | `interp1d($N_s$, $\lambda_2$)` → solve $N_s = N_s^\mathrm{excl}$ |
+| $\lambda_1$ critical | λ₂ = 0.5 | $\lambda_1$      | interp1d($N_s$, $\lambda_1$) → solve $N_s = N_s^\mathrm{excl}$ |
+| $\lambda_2$ critical | λ₁ = 0.5 | $\lambda_2$      | interp1d($N_s$, $\lambda_2$) → solve $N_s = N_s^\mathrm{excl}$ |
 
 <!-- 
 #### Luminosity treatment
