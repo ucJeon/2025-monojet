@@ -35,8 +35,8 @@ combine -M AsymptoticLimits $DC \
     --run expected
 ```
 For the `$mode` are considered as
-- none : without statistical uncertainties 
-- stats : with statistical uncertainties 
+- none : without statistical uncertainties
+- stats : with statistical uncertainties
 - sys1 : + 10% signal cross-section uncertainty for signal side
 - sys2 : + 5% JES uncertainties for signal and background both side
 - sys3 : + 4% MET uncertainties for signal and background both side
@@ -51,16 +51,16 @@ kmax *
 bin         bin1
 observation 46930
 ----------------------------------------------------------------------
-bin                      bin1                bin1                
-process                  sig                 bkg                 
-process                  0                   1                   
-rate                     4638.0954           46929.5125          
+bin                      bin1                bin1
+process                  sig                 bkg
+process                  0                   1
+rate                     4638.0954           46929.5125
 ----------------------------------------------------------------------
 stat_bkg        lnN     -                   1.0120
 ```
 Note that if the line `observation 46930` is omitted in the `datacard` as input to Combine, you would see the warning `No observed data 'data_obs' in the workspace. Cannot compute limit.`.
 
-As a result, 
+As a result,
 - (1) it print-out the expected signal strength r
 - (2) and make **output root file** names `higgsCombine.Lumi300.MX10.stats.AsymptoticLimits.mH1000.root`
 ```
@@ -92,7 +92,7 @@ It is performed in the `./result` folder. the results are processed by following
 - `run_step1.sh` is run-script for `step1_make-table.py` which is make markdown style table.
 - Make `resultcard_expected.txt` as summary table
 - by parsing `median expected r` from **output root files**.
-- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹. 
+- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹.
 
 | $M_{X_1}$ [TeV] |  none  | stats  |  sys1  |  sys2  |  sys3  |
 | :-------------: | :----: | :----: | :----: | :----: | :----: |
@@ -120,40 +120,119 @@ It is performed in the `./result` folder. the results are processed by following
 
 ### Converting r-value to coupling upper limit
 
-The r-value from HiggsCombine represents the upper limit on the signal strength modifier μ.
-To convert this into a coupling upper limit, the cross-section parameterization is used.
+The r-value from HiggsCombine is the 95% CL upper limit on the signal strength modifier μ.
+In current procedures, rather than converting r to a coupling limit via an analytical cross-section ratio($\sigma \propto |\lambda_1|^2 |\lambda_2|^2 / (4|\lambda_1|^2 + |\lambda_2|^2)$), 
+this analysis scans the full two-dimensional $(\lambda_1,\lambda_{2})$ coupling space using 
+luminosity-scaled signal yields obtained directly from the BDT-cut output.
+The file `src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv`[(link)](src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv) contains the remaining signal yield at each $(\lambda_1,\lambda_2)$ grid point after applying the BDT cut(0.1050 in this case), for the Run 3 luminosity scenario and the $m_{X_1}=1.0\,\mathrm{TeV}$ BDT model.
 
-The signal rate in the datacard is generated at a reference coupling point
-(λ₁_ref, λ₂_ref) = (0.5, 0.5):
+#### Excluded signal yield
 
-$$N_s^{\rm nominal} = \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) \times \mathcal{L} \times \epsilon_s$$
+The nominal signal yield N_s^nominal is read from the datacard `rate` line:
 
-The excluded cross section is:
+$$N_s^{\rm nominal} = \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) \times \mathcal{L} \times \varepsilon_s^{\rm ref}$$
 
-$$\sigma^{\rm excluded} = r_{\rm up} \times \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref})$$
+where the reference coupling is $(\lambda_{1}^{\mathrm{ref}},\lambda_{2}^\mathrm{ref})$ = (0.1, 0.1) and $\epsilon^\mathrm{ref}_{s}$ is the combined selection and BDT efficiency at that point.  
+The datacard rate already encodes the luminosity, so $N_s^\mathrm{nominal}$ is luminosity-explicit.
 
-Using the parameterization $\sigma \propto |\lambda_1|^2 |\lambda_2|^2 / (4|\lambda_1|^2 + |\lambda_2|^2)$,
-the upper limit on λ₂ (with λ₁ = 0.5 fixed) is obtained by solving:
+The 95% CL excluded signal yield is then:
 
-$$r_{\rm up} = \frac{\sigma(\lambda_1, \lambda_2^{\rm up})}{\sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref})} = \frac{|\lambda_2^{\rm up}|^2 (4|\lambda_1^{\rm ref}|^2 + |\lambda_2^{\rm ref}|^2)}{|\lambda_2^{\rm ref}|^2 (4|\lambda_1|^2 + |\lambda_2^{\rm up}|^2)}$$
+$$N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
 
-With λ₁ = λ₁_ref = 0.5, this simplifies to:
+In code (`step2_plot-expected-contour.py`):
+```python
+s0 = get_s0_from_datacard(card)      # reads 'rate' line → N_s^nominal
+s_up = r_val * s0                    # N_s^excl
+```
 
-$$r_{\rm up} = \frac{|\lambda_2^{\rm up}|^2 (1 + |\lambda_2^{\rm ref}|^2)}{|\lambda_2^{\rm ref}|^2 (1 + |\lambda_2^{\rm up}|^2)}$$
+#### Signal-yield plane over $(\lambda_{1},\lambda_{2})$
 
-This is solved numerically for λ₂_up.
+For each coupling grid point $(\lambda_{1},\lambda_{2})$, the actual signal yield after the BDT cut is read from `sig_lumi{lumi}_mx1{mx1}.csv` (column `sg after`):
+$$N_s(\lambda_1, \lambda_2) = \sigma(\lambda_1, \lambda_2) \times \mathcal{L} \times \varepsilon_s(\lambda_1, \lambda_2)$$
+This yield is already luminosity-scaled to the target integrated luminosity (300 or 3000 fb⁻¹) and includes the actual BDT efficiency $\epsilon_{s}(\lambda_{1},\lambda_{2})$, which may vary
+across coupling points because different $(\lambda_{1},\lambda_{2})$ samples have different kinematics.
+
+The grid covers:
+- $\lambda_{1}$ $\in$ {0.03, 0.05, 0.07, 0.08, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00}
+- $\lambda_{1}$ $\in$ {0.04, 0.06, 0.08, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00}
+The result is a 2D matrix (plane) indexed by $(\lambda_{1},\lambda_{2})$, which is then interpolated with a cubic spline (`RectBivariateSpline`) at 100× finer resolution.
+
+In code:
+```python
+plane = build_plane(sig_csv, mx1, lam1_list, lam2_list, col="sg after")
+XI, YI, ZI = interpolate_plane_str(plane)   # cubic spline × 100
+```
+
+#### Exclusion contour
+
+The 95% CL exclusion boundary in the (λ₁, λ₂) plane is the iso-yield contour:
+
+$$N_s(\lambda_1, \lambda_2) = N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
+
+Since both sides share the same luminosity factor, L cancels: (이건 없어도 될 것 같은데)
+
+$$\sigma(\lambda_1, \lambda_2) \times \varepsilon_s(\lambda_1, \lambda_2)
+  = r_{\rm up} \times \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) \times \varepsilon_s^{\rm ref}$$
+
+The region where $N_s(\lambda_{1},\lambda_{2}) > N_s^\mathrm{excl}$ is **excluded at 95% CL**.
+The contour is drawn with `matplotlib.axes.Axes.contour` at `levels=[s_up]`.
+
+In code:
+```python
+cs = ax.contour(XI, YI, ZI, levels=[s_up], colors=[color], linewidths=2.0)
+```
+
+#### Critical coupling values (1D slices)
+
+To quote a single number per mass point, 1D slices through the contour are taken
+by fixing one coupling at its reference value and scanning the other:
+
+| Slice       | Fixed    | Scanned | Interpolation                                         |
+| ----------- | -------- | ------- | ----------------------------------------------------- |
+| λ₂ critical | λ₁ = 0.5 | λ₂      | `interp1d(N_s, λ₂)` → solve $N_s = N_s^\mathrm{excl}$ |
+| λ₁ critical | λ₂ = 0.5 | λ₁      | `interp1d(N_s, λ₁)` → solve $N_s = N_s^\mathrm{excl}$ |
+
+Linear 1D interpolation is used (`scipy.interpolate.interp1d`) on the actual CSV data along the fixed-coupling slice, giving sub-grid precision without relying on the cross-section parameterization formula.
+
+#### Luminosity treatment
+
+Because both N_s(λ₁, λ₂) and N_s^nominal are scaled to the **same** luminosity L,
+the contour condition is mathematically L-independent (L cancels).
+Luminosity enters the result only through r_up, which is obtained by running
+HiggsCombine separately with datacards built for each L scenario (300 or 3000 fb⁻¹).
+
+To produce limits for a different luminosity:
+1. Re-run `run_asymptotic_card-all.sh` with the corresponding datacard (`lumi=3000`).
+2. Use the corresponding `sig_lumi3000_mx1{mx1}.csv` file for the N_s plane.
+3. The contour code is identical; only the input files change.
+
+#### Consistency check
+
+In the stats-limited regime, r_up scales as 1/√L.  If ε_s is approximately constant
+across (λ₁, λ₂), the contour condition reduces to:
+
+$$\frac{\sigma(\lambda_1^{\rm lim}, \lambda_2^{\rm lim})}{\sigma_{\rm ref}} = r_{\rm up}$$
+
+Using σ ∝ |λ₁|²|λ₂|² / (4|λ₁|² + |λ₂|²), the coupling limit scales as:
+
+$$\frac{\lambda_2^{\rm up}(3000)}{\lambda_2^{\rm up}(300)} \approx 10^{-1/8} \approx 0.75$$
+
+Verification at 2.5 TeV: 0.20 × 0.75 = 0.15, observed 0.14. Consistent.
 
 ### Running the conversion
 
 ```bash
 cd result/
-python run_limit.py --lumi 300 --lam1_ref 0.5 --lam2_ref 0.5
+bash run_step2.sh
 ```
 
-This script:
-1. Reads r-values from the root files produced by `combine`
-2. Solves the above equation numerically for each mass point
-3. Outputs the λ₂ upper limit table
+This script calls `step2_plot-expected-contour.py` which:
+1. Reads r-values from `resultcard_expected.txt` (produced by Step 1)
+2. Reads N_s^nominal from the relevant datacard `rate` line
+3. Computes N_s^excl = r_up × N_s^nominal
+4. Builds the 2D signal-yield plane from `sig_lumi{lumi}_mx1{mx1}.csv`
+5. Draws the exclusion contour at N_s = N_s^excl
+6. Reports λ₁_crit and λ₂_crit via 1D interpolation
 
 ### Output format
 
@@ -164,35 +243,12 @@ This script:
 | stats only | < 0.054 | < 0.088 | < 0.14 | < 0.20 |
 ```
 
-### Consistency checks
+Contour plots are saved to `result/plots_expected/limit_{mode}_lumi{lumi}.png`.
 
-**Luminosity scaling (stats-limited regime):**
-
-$$\frac{r_{\rm up}(3000)}{r_{\rm up}(300)} \approx \frac{1}{\sqrt{10}} \approx 0.316$$
-
-Equivalently in coupling space:
-
-$$\frac{\lambda_2^{\rm up}(3000)}{\lambda_2^{\rm up}(300)} \approx 10^{-1/8} \approx 0.75$$
-
-Verification at 2.5 TeV: 0.20 × 0.75 = 0.15, observed 0.14. Consistent.
-
-**Ordering independence:**
+### Ordering independence
 
 Systematic uncertainties are added in two orderings:
 - Order 1: stats → xsec → JES → MET
 - Order 2: stats → MET → JES → xsec
 
 Final limits must agree. Intermediate values may differ.
-
-### File structure
-
-```
-result/
-├── run_limit.py              # r-value → λ₂ conversion
-├── resultcard_expected.txt    # summary of r-values (expected)
-├── 26.04.26-limit.md          # systematic impact report
-└── plots/
-    └── limit/
-        ├── limit-300-log.jpeg
-        └── limit-3000-log.jpeg
-```
