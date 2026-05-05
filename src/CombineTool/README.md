@@ -126,12 +126,24 @@ It is performed in the `./result` folder. the results are processed by following
 
 | MX1 | lam1_crit (fixed lam2=0.5) | lam2_crit (fixed lam1=0.5) |
 |---|---|---|
-| 1.0 | <0.03 | 0.054 |
+| 1.0 | <0.03 | **0.054** |
 | 1.5 | 0.043 | 0.088 |
 | 2.0 | 0.072 | 0.139 |
 | 2.5 | 0.109 | 0.204 |
 
 ![The examples contour plot mentioned](./result/plots_expected/limit_stats_lumi300.png)
+
+### StepA1 (`run_stepA1.sh`)
+- `run_stepA1.sh` is run-script for `stepA1_make-table-criticalValTable-lam2.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/6abca33abb0504144e84694b266b89d2d18df7d3/src/CombineTool/result/stepA1_make-table-criticalValTable-lam2.py#L185-L215)
+    - print critical $\lambda_2$ value by according to adding additional (systematic) uncertainties
+- below tables are one of the example for the case of Run3 Luminosity, which shows critical $\lambda_2$ value 
+
+| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
+|---|---|---|---|---|
+| stats only | < **0.05** | < 0.09 | < 0.14 | < 0.20 |
+| stats + xsec (10%) | < 0.05 | < 0.09 | < 0.14 | < 0.21 |
+| stats + xsec + JES (5%) | < 0.10 | < 0.11 | < 0.15 | < 0.21 |
+| stats + xsec + JES + MET (4%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
 
 ### Converting r-value to coupling upper limit
 
@@ -154,7 +166,7 @@ The 95% CL excluded signal yield is then:
 
 $$N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
 
-In code (`step2_plot-expected-contour.py`):
+In code (`step2_plot-expected-contour.py`)[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L522):
 ```python
 s0 = get_s0_from_datacard(card)      # reads 'rate' line → N_s^nominal
 s_up = r_val * s0                    # N_s^excl
@@ -179,14 +191,14 @@ XI, YI, ZI = interpolate_plane_str(plane)   # cubic spline × 100
 
 #### Exclusion contour
 
-The 95% CL exclusion boundary in the (λ₁, λ₂) plane is the iso-yield contour:
+The 95% CL exclusion boundary in the $(\lambda_1, \lambda_2)$ plane
 
 $$N_s(\lambda_1, \lambda_2) = N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
 
 The region where $N_s(\lambda_{1},\lambda_{2}) > N_s^\mathrm{excl}$ is **excluded at 95% CL**.
 The contour is drawn with `matplotlib.axes.Axes.contour` at `levels=[s_up]`.
 
-In code:
+In code[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L429):
 ```python
 cs = ax.contour(XI, YI, ZI, levels=[s_up], colors=[color], linewidths=2.0)
 ```
