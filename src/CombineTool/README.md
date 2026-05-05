@@ -107,7 +107,7 @@ It is performed in the `./result` folder. the results are processed by following
 - `run_step1.sh` is run-script for `step1_make-table.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L304)
 - which makes `resultcard_expected.txt`[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/resultcard_expected.txt_XSEC-JES-MET#L4) as summary table (markdown-style table)
 - by parsing `median expected r` from **output root files**.
-- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all run-mode and $m_(X_1)$ mass-point with Run3 luminosity.
+- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all run-mode and $m_{X_1}$ mass-point with Run3 luminosity.
 
 | $M_{X_1}$ [TeV] |  none  | stats  |  sys1  |  sys2  |  sys3  |
 | :-------------: | :----: | :----: | :----: | :----: | :----: |
@@ -117,7 +117,7 @@ It is performed in the `./result` folder. the results are processed by following
 |       2.5       | 4.6094 | 5.1094 | 5.2031 | 5.5312 | 5.7344 |
 
 ### Step2 (`run_step2.sh`)
-- `run_step2.sh` is run-script for `step2_plot-expected-contour.py`[(Go to code-line)]([https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L299](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L524-L545))
+- `run_step2.sh` is run-script for `step2_plot-expected-contour.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L524-L545)
     - (1) print-out for $\lambda_{i}$ critical values when $\lambda_{j}$=0.5 $(i,j=1,2, i \neq j)$ and
     - (2) make contour plots in the folder `plots_expected` varying luminosity scenarios and uncertainty mode.
     - For details about scripts, please check to [Converting r-value to coupling upper limit](#converting-r-value-to-coupling-upper-limit).
