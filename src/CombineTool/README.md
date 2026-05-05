@@ -56,6 +56,7 @@ For the `$mode` are considered as
 - sys1 : + 10% signal cross-section uncertainty for signal side [(Run3 Lumi., sys1 mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys1.txt#L12)
 - sys2 : + 5% JES uncertainties for signal and background both side [(Run3 Lumi., sys2 mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys2.txt#L12)
 - sys3 : + 4% MET uncertainties for signal and background both side [(Run3 Lumi., sys3 mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys3.txt#L12)
+
 In detail, you can check the modes in the folder `datacards`
 
 The datacard referenced by $DC in the example above has the following format (Run3 Lumi, $m_{X_1}$=1.0TeV, mode=stats):
