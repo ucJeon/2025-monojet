@@ -258,8 +258,8 @@ Systematic uncertainties are added in two orderings:
 | Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
 |---|---|---|---|---|
 | stats only | < 0.05 | < 0.09 | < 0.14 | < 0.20 |
-| stats + xsec (10%) | < 0.09 | < 0.10 | < 0.15 | < 0.21 |
-| stats + xsec + JES (5%) | < 0.11 | < 0.11 | < 0.16 | < 0.21 |
-| stats + xsec + JES + MET (4%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
+| stats + MET (4%) | < 0.09 | < 0.10 | < 0.15 | < 0.21 |
+| stats + MET + JES (5%) | < 0.11 | < 0.11 | < 0.16 | < 0.21 |
+| stats + MET + JES + xsec (10%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
 
 Final limits must agree. Intermediate values may differ.
