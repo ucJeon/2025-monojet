@@ -104,7 +104,7 @@ with `run_asymptotic_w-observed_card-all.sh` run script
 It is performed in the `./result` folder. the results are processed by following procedures
 
 ### Step1 (`run_step1.sh`)
-- `run_step1.sh` is run-script for `step1_make-table.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L299)
+- `run_step1.sh` is run-script for `step1_make-table.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L304)
 - which makes `resultcard_expected.txt`[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/resultcard_expected.txt_XSEC-JES-MET#L4) as summary table (markdown-style table)
 - by parsing `median expected r` from **output root files**.
 - Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all run-mode and $m_(X_1)$ mass-point with Run3 luminosity.
