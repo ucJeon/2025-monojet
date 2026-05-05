@@ -244,7 +244,22 @@ Verification at 2.5 TeV: 0.20 × 0.75 = 0.15, observed 0.14. Consistent.
 ### Ordering independence
 
 Systematic uncertainties are added in two orderings:
-- Order 1: stats → xsec → JES → MET
-- Order 2: stats → MET → JES → xsec
+- Order 1: stats → xsec → JES → MET (First table in below)
+- Order 2: stats → MET → JES → xsec (Second table in below)
+- for Run3 Luminosity
+
+| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
+|---|---|---|---|---|
+| stats only | < 0.05 | < 0.09 | < 0.14 | < 0.20 |
+| stats + xsec (10%) | < 0.05 | < 0.09 | < 0.14 | < 0.21 |
+| stats + xsec + JES (5%) | < 0.10 | < 0.11 | < 0.15 | < 0.21 |
+| stats + xsec + JES + MET (4%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
+
+| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
+|---|---|---|---|---|
+| stats only | < 0.05 | < 0.09 | < 0.14 | < 0.20 |
+| stats + xsec (10%) | < 0.09 | < 0.10 | < 0.15 | < 0.21 |
+| stats + xsec + JES (5%) | < 0.11 | < 0.11 | < 0.16 | < 0.21 |
+| stats + xsec + JES + MET (4%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
 
 Final limits must agree. Intermediate values may differ.
