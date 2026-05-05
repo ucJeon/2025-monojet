@@ -104,20 +104,20 @@ with `run_asymptotic_w-observed_card-all.sh` run script
 It is performed in the `./result` folder. the results are processed by following procedures
 
 ### Step1 (`run_step1.sh`)
-- `run_step1.sh` is run-script for `step1_make-table.py`
-- which makes `resultcard_expected.txt` as summary table (markdown-style table)
+- `run_step1.sh` is run-script for `step1_make-table.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L299)
+- which makes `resultcard_expected.txt`[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/resultcard_expected.txt_XSEC-JES-MET#L4) as summary table (markdown-style table)
 - by parsing `median expected r` from **output root files**.
 - Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all run-mode and $m_(X_1)$ mass-point with Run3 luminosity.
 
 | $M_{X_1}$ [TeV] |  none  | stats  |  sys1  |  sys2  |  sys3  |
 | :-------------: | :----: | :----: | :----: | :----: | :----: |
-|       1.0       | 0.2920 | 0.3740 | 0.3809 | 1.1055 | 1.3984 |
+|       1.0       | 0.2920 | **0.3740** | 0.3809 | 1.1055 | 1.3984 |
 |       1.5       | 0.8086 | 0.9375 | 0.9531 | 1.3672 | 1.5859 |
 |       2.0       | 2.0078 | 2.2891 | 2.3203 | 2.6953 | 2.9141 |
 |       2.5       | 4.6094 | 5.1094 | 5.2031 | 5.5312 | 5.7344 |
 
 ### Step2 (`run_step2.sh`)
-- `run_step2.sh` is run-script for `step2_plot-expected-contour.py`
+- `run_step2.sh` is run-script for `step2_plot-expected-contour.py`[(Go to code-line)]([https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L299](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L524-L545))
     - (1) print-out for $\lambda_{i}$ critical values when $\lambda_{j}$=0.5 $(i,j=1,2, i \neq j)$ and
     - (2) make contour plots in the folder `plots_expected` varying luminosity scenarios and uncertainty mode.
     - For details about scripts, please check to [Converting r-value to coupling upper limit](#converting-r-value-to-coupling-upper-limit).
