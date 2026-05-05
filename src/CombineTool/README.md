@@ -123,7 +123,7 @@ It is performed in the `./result` folder. the results are processed by following
 - The r-value from HiggsCombine is the 95% CL upper limit on the signal strength modifier μ.
 - In current procedures, this analysis scans the full two-dimensional $(\lambda_1,\lambda_{2})$ coupling space using 
 - luminosity-scaled signal yields obtained directly from the BDT-cut output.
-    - The file `src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv`[(link)](../src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv)
+    - The file `src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv`[(link)](../BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv)
     - contains the remaining signal yield at each $(\lambda_1,\lambda_2)$ grid point after applying the BDT cut(0.1050 in this case), for the Run 3 luminosity scenario and the $m_{X_1}=1.0\,\mathrm{TeV}$ BDT model.
 
 #### Excluded signal yield
