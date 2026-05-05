@@ -103,7 +103,7 @@ It is performed in the `./result` folder. the results are processed by following
 
 ### Step2 (`run_step2.sh`)
 - `run_step2.sh` is run-script for `step2_plot-expected-contour.py`
-    - (1) print-out for $\lambda_{i}$ critical values when $\lambda_{j}$=0.5 $(i,j=1,2, i\neqj)$ and
+    - (1) print-out for $\lambda_{i}$ critical values when $\lambda_{j}$=0.5 $(i,j=1,2, i \neq j)$ and
     - (2) make contour plots in the folder `plots_expected` varying luminosity scenarios and uncertainty mode.
     - For details about scripts, please check to [Converting r-value to coupling upper limit](#converting-r-value-to-coupling-upper-limit).
 - below tables are one of the example for the case of Run3 Luminosity and statistical uncertainty considered only
