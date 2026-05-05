@@ -1,6 +1,21 @@
 # Higgs Combine Tool
 This directory contains the HiggsCombine setup and datacard-based limit-setting workflow.
 
+## Table of Contents
+
+- [Setup](#setup)
+  - [HiggsCombine Tool Setup](#higgscombine-tool-setup)
+- [Running AsymptoticLimits](#running-asymptoticlimits)
+- [Analysis](#analysis)
+  - [Step1](#step1-run_step1sh)
+  - [Step2](#step2-run_step2sh)
+  - [Converting r-value to coupling upper limit](#converting-r-value-to-coupling-upper-limit)
+    - [Excluded signal yield](#excluded-signal-yield)
+    - [Signal-yield plane over lambda1 and lambda2](#signal-yield-plane-over-lambda1-and-lambda2)
+    - [Exclusion contour](#exclusion-contour)
+    - [Critical coupling values](#critical-coupling-values-1d-slices)
+  - [Ordering independence](#ordering-independence)
+
 ## Setup
 
 ### HiggsCombine Tool Setup
@@ -145,7 +160,7 @@ s0 = get_s0_from_datacard(card)      # reads 'rate' line → N_s^nominal
 s_up = r_val * s0                    # N_s^excl
 ```
 
-#### Signal-yield plane over $(\lambda_{1},\lambda_{2})$
+#### Signal-yield plane over lambda1 and lambda2
 
 For each coupling grid point $(\lambda_{1},\lambda_{2})$, the actual signal yield after the BDT cut is read from `sig_lumi{lumi}_mx1{mx1}.csv` (column `sg after`):
 $$N_s(\lambda_1, \lambda_2) = \sigma(\lambda_1, \lambda_2) \times \mathcal{L} \times \varepsilon_s(\lambda_1, \lambda_2)$$
