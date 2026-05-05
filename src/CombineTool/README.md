@@ -120,20 +120,20 @@ It is performed in the `./result` folder. the results are processed by following
 
 ### Converting r-value to coupling upper limit
 
-The r-value from HiggsCombine is the 95% CL upper limit on the signal strength modifier μ.
-In current procedures, rather than converting r to a coupling limit via an analytical cross-section ratio($\sigma \propto |\lambda_1|^2 |\lambda_2|^2 / (4|\lambda_1|^2 + |\lambda_2|^2)$), 
-this analysis scans the full two-dimensional $(\lambda_1,\lambda_{2})$ coupling space using 
-luminosity-scaled signal yields obtained directly from the BDT-cut output.
-The file `src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv`[(link)](src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv) contains the remaining signal yield at each $(\lambda_1,\lambda_2)$ grid point after applying the BDT cut(0.1050 in this case), for the Run 3 luminosity scenario and the $m_{X_1}=1.0\,\mathrm{TeV}$ BDT model.
+- The r-value from HiggsCombine is the 95% CL upper limit on the signal strength modifier μ.
+- In current procedures, this analysis scans the full two-dimensional $(\lambda_1,\lambda_{2})$ coupling space using 
+- luminosity-scaled signal yields obtained directly from the BDT-cut output.
+    - The file `src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv`[(link)](src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv)
+    - contains the remaining signal yield at each $(\lambda_1,\lambda_2)$ grid point after applying the BDT cut(0.1050 in this case), for the Run 3 luminosity scenario and the $m_{X_1}=1.0\,\mathrm{TeV}$ BDT model.
 
 #### Excluded signal yield
 
-The nominal signal yield N_s^nominal is read from the datacard `rate` line:
+The nominal signal yield $N_s^\mathrm{nominal}$ is read from the datacard `rate` line:
 
 $$N_s^{\rm nominal} = \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) \times \mathcal{L} \times \varepsilon_s^{\rm ref}$$
 
-where the reference coupling is $(\lambda_{1}^{\mathrm{ref}},\lambda_{2}^\mathrm{ref})$ = (0.1, 0.1) and $\epsilon^\mathrm{ref}_{s}$ is the combined selection and BDT efficiency at that point.  
-The datacard rate already encodes the luminosity, so $N_s^\mathrm{nominal}$ is luminosity-explicit.
+- where the reference coupling is $(\lambda_{1}^{\mathrm{ref}},\lambda_{2}^\mathrm{ref})$ = (0.1, 0.1) and
+- $\epsilon^\mathrm{ref}_{s}$ is the combined selection and BDT efficiency at that point.
 
 The 95% CL excluded signal yield is then:
 
@@ -149,8 +149,7 @@ s_up = r_val * s0                    # N_s^excl
 
 For each coupling grid point $(\lambda_{1},\lambda_{2})$, the actual signal yield after the BDT cut is read from `sig_lumi{lumi}_mx1{mx1}.csv` (column `sg after`):
 $$N_s(\lambda_1, \lambda_2) = \sigma(\lambda_1, \lambda_2) \times \mathcal{L} \times \varepsilon_s(\lambda_1, \lambda_2)$$
-This yield is already luminosity-scaled to the target integrated luminosity (300 or 3000 fb⁻¹) and includes the actual BDT efficiency $\epsilon_{s}(\lambda_{1},\lambda_{2})$, which may vary
-across coupling points because different $(\lambda_{1},\lambda_{2})$ samples have different kinematics.
+This yield is already luminosity-scaled to the target integrated luminosity (300 or 3000 fb⁻¹)
 
 The grid covers:
 - $\lambda_{1}$ $\in$ {0.03, 0.05, 0.07, 0.08, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00}
@@ -169,11 +168,6 @@ The 95% CL exclusion boundary in the (λ₁, λ₂) plane is the iso-yield conto
 
 $$N_s(\lambda_1, \lambda_2) = N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
 
-Since both sides share the same luminosity factor, L cancels: (이건 없어도 될 것 같은데)
-
-$$\sigma(\lambda_1, \lambda_2) \times \varepsilon_s(\lambda_1, \lambda_2)
-  = r_{\rm up} \times \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) \times \varepsilon_s^{\rm ref}$$
-
 The region where $N_s(\lambda_{1},\lambda_{2}) > N_s^\mathrm{excl}$ is **excluded at 95% CL**.
 The contour is drawn with `matplotlib.axes.Axes.contour` at `levels=[s_up]`.
 
@@ -189,11 +183,10 @@ by fixing one coupling at its reference value and scanning the other:
 
 | Slice       | Fixed    | Scanned | Interpolation                                         |
 | ----------- | -------- | ------- | ----------------------------------------------------- |
-| λ₂ critical | λ₁ = 0.5 | λ₂      | `interp1d(N_s, λ₂)` → solve $N_s = N_s^\mathrm{excl}$ |
-| λ₁ critical | λ₂ = 0.5 | λ₁      | `interp1d(N_s, λ₁)` → solve $N_s = N_s^\mathrm{excl}$ |
+| $\lambda_1$ critical | λ₂ = 0.5 | $\lambda_1$      | `interp1d($N_s$, $\lambda_1$)` → solve $N_s = N_s^\mathrm{excl}$ |
+| $\lambda_2$ critical | λ₁ = 0.5 | $\lambda_2$      | `interp1d($N_s$, $\lambda_2$)` → solve $N_s = N_s^\mathrm{excl}$ |
 
-Linear 1D interpolation is used (`scipy.interpolate.interp1d`) on the actual CSV data along the fixed-coupling slice, giving sub-grid precision without relying on the cross-section parameterization formula.
-
+<!-- 
 #### Luminosity treatment
 
 Because both N_s(λ₁, λ₂) and N_s^nominal are scaled to the **same** luminosity L,
@@ -218,32 +211,7 @@ Using σ ∝ |λ₁|²|λ₂|² / (4|λ₁|² + |λ₂|²), the coupling limit s
 $$\frac{\lambda_2^{\rm up}(3000)}{\lambda_2^{\rm up}(300)} \approx 10^{-1/8} \approx 0.75$$
 
 Verification at 2.5 TeV: 0.20 × 0.75 = 0.15, observed 0.14. Consistent.
-
-### Running the conversion
-
-```bash
-cd result/
-bash run_step2.sh
-```
-
-This script calls `step2_plot-expected-contour.py` which:
-1. Reads r-values from `resultcard_expected.txt` (produced by Step 1)
-2. Reads N_s^nominal from the relevant datacard `rate` line
-3. Computes N_s^excl = r_up × N_s^nominal
-4. Builds the 2D signal-yield plane from `sig_lumi{lumi}_mx1{mx1}.csv`
-5. Draws the exclusion contour at N_s = N_s^excl
-6. Reports λ₁_crit and λ₂_crit via 1D interpolation
-
-### Output format
-
-```
-## Summary: lumi=300 fb⁻¹ (λ₁ = 0.5 fixed)
-| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
-|---|---|---|---|---|
-| stats only | < 0.054 | < 0.088 | < 0.14 | < 0.20 |
-```
-
-Contour plots are saved to `result/plots_expected/limit_{mode}_lumi{lumi}.png`.
+-->
 
 ### Ordering independence
 
