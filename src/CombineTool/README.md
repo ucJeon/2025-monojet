@@ -28,7 +28,7 @@ This directory contains the HiggsCombine setup and datacard-based limit-setting 
 5. [Comparison with N_sig Plane Method](#comparison-with-n_sig-plane-method)
    - [Method Differences](#method-differences)
    - [Numerical Comparison](#numerical-comparison)
-   - [Log-scale Contour Comparison: 300 fb⁻¹](#log-scale-contour-comparison:-300-fb-1)
+   - [Log-scale Contour Comparison: Run3](#log-scale-contour-comparison:-run3)
 
 6. [References](#references)
 
@@ -357,7 +357,7 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 
 The results of the two methods agree within 1% → This confirms that the analytical $\sigma$ model and $\varepsilon$ spline interpolation are sufficiently accurate.
 
-### Log-scale Contour Comparison: 300 fb⁻¹
+### Log-scale Contour Comparison: Run3
 
 Log-scale contour plots for the `stats` mode, comparing the two luminosity scenarios side by side:
 
