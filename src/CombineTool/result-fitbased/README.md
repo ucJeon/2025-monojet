@@ -185,29 +185,6 @@ This script reads `outputs-xsfit/*.root` and produces `result-fitbased/results-x
 ```bash
 python3 result-fitbased/plot_contour_fitbased.py
 ```
-#### Median expected 95% confidence level exclusion
-
-All plots are stored in `result-fitbased/plots/`.  
-Example contour plots for the `stats` mode are shown below.
-
-| 300 fb$^{-1}$ (linear) | 3000 fb$^{-1}$ (linear) |
-|---|---|
-| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_lin.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_lin.png) |
-
-| 300 fb$^{-1}$ (log) | 3000 fb$^{-1}$ (log) |
-|---|---|
-| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_log.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_log.png) |
-
-#### Why XS-fit based (not yield-spline)?
-
-The previous approach interpolated $N_s(\lambda_1, \lambda_2)$ directly with a cubic spline, which caused **wriggle artifacts** in the exclusion contour because $\sigma_{\rm th} \propto \lambda_1^n \lambda_2^m$ is highly nonlinear on a sparse grid.
-
-The XS-fit based approach separates the two contributions:
-
-- $\sigma(\lambda_1, \lambda_2)$ — analytic and smooth (known from theory)
-- $\varepsilon(\lambda_1, \lambda_2)$ — smooth 2D spline (geometrically varies slowly)
-
-This yields a smooth, artifact-free contour at arbitrary resolution.
 
 #### Exclusion condition
 
@@ -252,20 +229,40 @@ BDT cut values per $m_{X_1}$:
 
 Output plots are saved to `result-fitbased/plots/contour_lumi{L}_{mode}_{log|lin}.pdf`.
 
+#### Median expected 95% confidence level exclusion
+
+All plots are stored in `result-fitbased/plots/`.  
+Example contour plots for the `stats` mode are shown below.
+
+| 300 $\mathrm{fb}^{-1}$ (linear) | 3000 $\mathrm{fb}^{-1}$ (linear) |
+|---|---|
+| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_lin.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_lin.png) |
+
+| 300 $\mathrm{fb}^{-1}$ (log) | 3000 $\mathrm{fb}^{-1}$ (log) |
+|---|---|
+| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_log.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_log.png) |
+
 ---
 
 ### Step 3 — Critical Coupling Values
 
 To quote a single number per mass point, 1D slices through the contour are taken by fixing one coupling at $\lambda = 0.5$ and solving for the critical value of the other.
 
-Example for $\mathcal{L} = 300$ fb$^{-1}$, `stats` mode:
+Example for $\mathcal{L} = 300 $\mathrm{fb}^{-1}$, `stats` mode:
 
-|$m_{X_1}$ [TeV]|$\lambda_1^{\rm crit}$ (fixed $\lambda_2=0.5$)|$\lambda_2^{\rm crit}$ (fixed $\lambda_1=0.5$)|
 |:-:|:-:|:-:|
-|1.0|<0.03|0.054|
-|1.5|0.043|0.088|
-|2.0|0.072|0.139|
-|2.5|0.109|0.204|
+|1.0|<0.030|0.054|
+|1.5|0.043|0.087|
+|2.0|0.070|0.140|
+|2.5|0.106|0.207|
+
+Example for $\mathcal{L} = 3000 $\mathrm{fb}^{-1}$, `stats` mode:
+
+|:-:|:-:|:-:|
+|1.0|<0.030|0.044|
+|1.5|0.033|0.066|
+|2.0|0.051|0.102|
+|2.5|0.073|0.146|
 
 Full results across all luminosity and systematic scenarios are in `result-fitbased/lam_crit_summary.csv`.
 
@@ -273,13 +270,21 @@ Critical $\lambda_2$ values as systematic uncertainties are added incrementally 
 
 |Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
 |---|:-:|:-:|:-:|:-:|
-|stats only|<0.05|<0.09|<0.14|<0.20|
-|stats + xsec (10%)|<0.05|<0.09|<0.14|<0.21|
-|stats + xsec + JES (5%)|<0.10|<0.11|<0.15|<0.21|
-|stats + xsec + JES + MET (4%)|<0.11|<0.11|<0.16|<0.22|
+|stats only|<0.06|<0.09|<0.14|<0.21|
+|stats + xsec (10%)|<0.06|<0.09|<0.15|<0.21|
+|stats + xsec + JES (5%)|<0.10|<0.11|<0.16|<0.22|
+|stats + xsec + JES + MET (4%)|<0.11|<0.12|<0.16|<0.22|
+
+Critical $\lambda_2$ values as systematic uncertainties are added incrementally ($\mathcal{L} = 3000$ fb$^{-1}$):
+
+|Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
+|---|:-:|:-:|:-:|:-:|
+|stats only|<0.05|<0.07|<0.11|<0.15|
+|stats + xsec (10%)|<0.05|<0.07|<0.11|<0.15|
+|stats + xsec + JES (5%)|<0.10|<0.10|<0.13|<0.17|
+|stats + xsec + JES + MET (4%)|<0.11|<0.11|<0.14|<0.17|
 
 ---
-
 ### Ordering Independence
 
 Systematic uncertainties were added in two orderings to verify that the final limits are independent of the order in which they are introduced (intermediate values may differ):
