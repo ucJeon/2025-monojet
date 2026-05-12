@@ -401,11 +401,11 @@ Signal efficiency $\varepsilon(\lambda_1, \lambda_2)$ (selection × BDT cut) ove
 
 | $m_{X_1} = 1.0$ TeV | $m_{X_1} = 1.5$ TeV |
 
-![efficiency\_map\_MX11-0.pdf](../Efficiency-signal/plots/efficiency_map_MX11-0.pdf)
+![efficiency\_map\_MX11-0.pdf](../Efficiency-signal/plots/efficiency_map_MX11-0.png)
 
-![efficiency\_map\_MX11-5.pdf](../Efficiency-signal/plots/efficiency_map_MX11-5.pdf)
+![efficiency\_map\_MX11-5.pdf](../Efficiency-signal/plots/efficiency_map_MX11-5.png)
 
-![efficiency\_map\_MX12-0.pdf](../Efficiency-signal/plots/efficiency_map_MX12-0.pdf)
+![efficiency\_map\_MX12-0.pdf](../Efficiency-signal/plots/efficiency_map_MX12-0.png)
 
 ![efficiency\_map\_MX12-5.pdf](../Efficiency-signal/plots/efficiency_map_MX12-5.pdf)
 
