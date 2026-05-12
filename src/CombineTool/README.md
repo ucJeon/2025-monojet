@@ -22,16 +22,20 @@ This directory contains the HiggsCombine setup and datacard-based limit-setting 
      - [Exclusion condition](#exclusion-condition)
      - [Cross-section parametrization](#cross-section-parametrization)
      - [Efficiency interpolation](#efficiency-interpolation)
-     - [Median expected 95% confidence level exclusion](#median-expected-95-confidence-level-exclusion)
+     - [Median expected 95% CL exclusion](#median-expected-95-confidence-level-exclusion)
    - [Step 3 — Critical Coupling Values](#step-3--critical-coupling-values)
 
 5. [Comparison with N_sig Plane Method](#comparison-with-n_sig-plane-method)
    - [Method Differences](#method-differences)
    - [Numerical Comparison](#numerical-comparison)
-   - [Log-scale Contour Comparison: Run3](#log-scale-contour-comparison:-run3)
+   - [Log-scale Contour Comparison: Run3](#log-scale-contour-comparison-run3)
 
 6. [References](#references)
 
+7. [Appendix](#appendix)
+   - [Cross-section planes](#cross-section-planes)
+   - [Efficiency check](#efficiency-check)
+  
 ## Setup
 
 ### HiggsCombine Tool Setup
