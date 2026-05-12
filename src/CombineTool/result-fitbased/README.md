@@ -60,13 +60,13 @@ imax 1  number of channels
 jmax 1  number of backgrounds
 kmax *
 ----------------------------------------------------------------------
-bin          bin1
-observation  -1
+bin                      bin1
+observation              -1
 ----------------------------------------------------------------------
 bin                      bin1                bin1
 process                  sig                 bkg
 process                  0                   1
-rate                     4638.0954           46929.5125
+rate                     463.8095            4692.9513
 ----------------------------------------------------------------------
 # signal normalized to xs_ref=... pb at (lam1=0.1, lam2=0.1), L=300 fb-1, eps_ref=...
 stat_bkg        lnN     -                   1.0120
@@ -84,7 +84,7 @@ stat_bkg        lnN     -                   1.0120
 |`sys2`|sys1 + JES 5% (sig+bkg, lnN)|
 |`sys3`|sys2 + MET 4% (sig+bkg, lnN)|
 
-Datacards for all modes are in `datacards/`.
+Datacards for all modes are in `datacards/datacards_XSEC-JES-MET_noObs`.
 
 ---
 
@@ -97,14 +97,12 @@ This analysis uses a **fully blind** setup:
 - `observation -1` in the datacard (Asimov: $n_{\rm obs} = b_0$, pre-fit)
 - `--run blind` in Combine (enforces pre-fit Asimov, no fit to data)
 
-> **Why `--run blind` and not `--run expected`?** `--run expected` performs a background-only fit to data first, then uses the post-fit state as Asimov — this is **not fully blind**. `--run blind` uses the pre-fit model directly. See: https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/latest/part5/longexerciseanswers/#b-running-combine-for-a-blind-analysis
-
 The command to run AsymptoticLimits for a single datacard is:
 
 ```bash
 combine -M AsymptoticLimits \
-    ./datacards/datacard_lumi300_mx11-0_cut0p1050_stats.txt \
-    -n .Lumi300.MX10.stats \
+    ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi300_mx11-0_cut0p1050_stats.txt \
+    -n ".Lumi300.MX10.stats.xsfit \
     -m 1000 \
     --run blind
 ```
@@ -115,17 +113,17 @@ To run all mass points, luminosity scenarios, and systematic modes:
 for lumi in 300 3000; do
   for mode in none stats sys1 sys2 sys3; do
     combine -M AsymptoticLimits \
-        ./datacards/datacard_lumi${lumi}_mx11-0_cut0p1050_${mode}.txt \
-        -n .Lumi${lumi}.MX10.${mode} -m 1000 --run blind
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx11-0_cut0p1050_${mode}.txt \
+        -n .Lumi${lumi}.MX10.${mode}.xsfit -m 1000 --run blind
     combine -M AsymptoticLimits \
-        ./datacards/datacard_lumi${lumi}_mx11-5_cut0p1350_${mode}.txt \
-        -n .Lumi${lumi}.MX15.${mode} -m 1500 --run blind
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx11-5_cut0p1350_${mode}.txt \
+        -n .Lumi${lumi}.MX15.${mode}.xsfit -m 1500 --run blind
     combine -M AsymptoticLimits \
-        ./datacards/datacard_lumi${lumi}_mx12-0_cut0p1440_${mode}.txt \
-        -n .Lumi${lumi}.MX20.${mode} -m 2000 --run blind
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx12-0_cut0p1440_${mode}.txt \
+        -n .Lumi${lumi}.MX20.${mode}.xsfit -m 2000 --run blind
     combine -M AsymptoticLimits \
-        ./datacards/datacard_lumi${lumi}_mx12-5_cut0p1520_${mode}.txt \
-        -n .Lumi${lumi}.MX25.${mode} -m 2500 --run blind
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx12-5_cut0p1520_${mode}.txt \
+        -n .Lumi${lumi}.MX25.${mode}.xsfit -m 2500 --run blind
   done
 done
 ```
