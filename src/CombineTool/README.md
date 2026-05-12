@@ -28,7 +28,6 @@ This directory contains the HiggsCombine setup and datacard-based limit-setting 
 5. [Comparison with N_sig Plane Method](#comparison-with-n_sig-plane-method)
    - [Method Differences](#method-differences)
    - [Numerical Comparison](#numerical-comparison)
-   - [Key Improvements in XS-fit](#key-improvements-in-xs-fit)
 
 6. [References](#references)
 
@@ -342,12 +341,6 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 | 2.5 | 0.109 | 0.106 | 0.204 | 0.207 |
 
 The results of the two methods agree within 1% → This confirms that the analytical $\sigma$ model and $\varepsilon$ spline interpolation are sufficiently accurate.
-
-### Key Improvements in XS-fit
-
-- **Blinding**: Asimov 데이터셋 사용(`observation -1`)으로 실제 관측값에 의한 bias 없음
-- **$\sigma$ factorization**: coupling 의존성을 해석식으로 분리하므로 dense MC grid 없이도 연속적인 contour 생성 가능
-- **$\varepsilon$ 분리**: efficiency를 $\sigma$와 독립적으로 보간하므로 $\sigma$ 모델 교체나 재사용이 용이
 
 ---
 
