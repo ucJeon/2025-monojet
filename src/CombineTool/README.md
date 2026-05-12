@@ -318,7 +318,7 @@ Critical $\lambda_2$ values as systematic uncertainties are added incrementally 
 
 ## Comparison with N_sig Plane Method
 
-The original approach ([`CombineTool/README.md`](../README.md)) also uses HiggsCombine r-values, but derives the exclusion contour differently.
+The original approach ([`CombineTool/README-signalYieldBased.md`](README-signalYieldBased.md)) also uses HiggsCombine r-values, but derives the exclusion contour differently.
 
 ### Method Differences
 
