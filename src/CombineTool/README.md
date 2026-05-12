@@ -399,8 +399,6 @@ Signal production cross section $\sigma(\lambda_1, \lambda_2)$ over the coupling
 
 Signal efficiency $\varepsilon(\lambda_1, \lambda_2)$ (selection × BDT cut) over the coupling plane for each mass point. Source: `src/Efficiency-signal/plots/`.
 
-| $m_{X_1} = 1.0$ TeV | $m_{X_1} = 1.5$ TeV |
-
 ![efficiency\_map\_MX11-0.png](../Efficiency-signal/plots/efficiency_map_MX11-0.png)
 
 ![efficiency\_map\_MX11-5.png](../Efficiency-signal/plots/efficiency_map_MX11-5.png)
