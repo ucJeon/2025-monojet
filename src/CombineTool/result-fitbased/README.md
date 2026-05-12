@@ -285,54 +285,7 @@ Critical $\lambda_2$ values as systematic uncertainties are added incrementally 
 |stats + xsec + JES + MET (4%)|<0.11|<0.11|<0.14|<0.17|
 
 ---
-### Ordering Independence
 
-Systematic uncertainties were added in two orderings to verify that the final limits are independent of the order in which they are introduced (intermediate values may differ):
-
-**Order 1**: stats → xsec → JES → MET
-
-|Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
-|---|:-:|:-:|:-:|:-:|
-|stats only|<0.05|<0.09|<0.14|<0.20|
-|stats + xsec (10%)|<0.05|<0.09|<0.14|<0.21|
-|stats + xsec + JES (5%)|<0.10|<0.11|<0.15|<0.21|
-|stats + xsec + JES + MET (4%)|<0.11|<0.11|<0.16|<0.22|
-
-**Order 2**: stats → MET → JES → xsec
-
-|Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
-|---|:-:|:-:|:-:|:-:|
-|stats only|<0.05|<0.09|<0.14|<0.20|
-|stats + MET (4%)|<0.09|<0.10|<0.15|<0.21|
-|stats + MET + JES (5%)|<0.11|<0.11|<0.16|<0.21|
-|stats + MET + JES + xsec (10%)|<0.11|<0.11|<0.16|<0.22|
-
-Final limits agree between orderings. ✅
-
----
-
-## Directory Structure
-
-```
-CombineTool/
-├── README.md                        # this file
-├── run_asymptotic_w-blind_card-all.sh   # blind analysis run script
-├── datacards/                       # input datacards (observation=-1)
-│   └── datacard_lumi{L}_mx1{mx}.{cut}_{mode}.txt
-├── outputs-xsfit/                   # Combine ROOT output files
-│   └── higgsCombine.Lumi{L}.MX{mx}.{mode}.*.root
-└── result-fitbased/                 # XS-fit based analysis
-    ├── parse_results-xsfit.py       # Step 1: r_up extraction
-    ├── plot_contour_fitbased.py     # Step 2: contour plotting
-    ├── results-xsfit.csv            # r_up and N_exc per scenario
-    ├── lam_crit_summary.csv         # critical lambda values
-    └── plots/
-        ├── contour_lumi{L}_{mode}_log.pdf
-        ├── contour_lumi{L}_{mode}_lin.pdf
-        └── eff_slices_all.pdf
-```
-
----
 
 ## References
 
