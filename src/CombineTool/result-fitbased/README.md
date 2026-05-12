@@ -4,6 +4,29 @@ This directory contains the HiggsCombine setup and datacard-based limit-setting 
 
 ---
 
+## Contents
+
+1. [Setup](#setup)
+   - [HiggsCombine Tool Setup](#higgscombine-tool-setup)
+
+2. [Datacard Structure](#datacard-structure)
+   - [Signal Normalization](#signal-normalization)
+   - [Systematic Uncertainty Modes](#systematic-uncertainty-modes)
+
+3. [Running AsymptoticLimits](#running-asymptoticlimits)
+   - [Blind Analysis](#blind-analysis)
+
+4. [Analysis](#analysis)
+   - [Step 1 — r-value extraction](#step-1--r-value-extraction)
+   - [Step 2 — Exclusion Contour (XS-fit based)](#step-2--exclusion-contour-xs-fit-based)
+     - [Exclusion condition](#exclusion-condition)
+     - [Cross-section parametrization](#cross-section-parametrization)
+     - [Efficiency interpolation](#efficiency-interpolation)
+     - [Median expected 95% confidence level exclusion](#median-expected-95-confidence-level-exclusion)
+   - [Step 3 — Critical Coupling Values](#step-3--critical-coupling-values)
+
+5. [References](#references)
+
 ## Setup
 
 ### HiggsCombine Tool Setup
