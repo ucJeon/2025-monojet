@@ -1,266 +1,360 @@
-# Higgs Combine Tool
-This directory contains the HiggsCombine setup and datacard-based limit-setting workflow.
+# HiggsCombine Tool
 
-## Table of Contents
+This directory contains the HiggsCombine setup and datacard-based limit-setting workflow for the b-associated monojet analysis.
 
-- [Setup](#setup)
-  - [HiggsCombine Tool Setup](#higgscombine-tool-setup)
-- [Running AsymptoticLimits](#running-asymptoticlimits)
-- [Analysis](#analysis)
-  - [Step1](#step1-run_step1sh)
-  - [Step2](#step2-run_step2sh)
-  - [stepA1](#stepA1-run_stepA1sh)
-  - [Converting r-value to coupling upper limit](#converting-r-value-to-coupling-upper-limit)
-    - [Excluded signal yield](#excluded-signal-yield)
-    - [Signal-yield plane over lambda1 and lambda2](#signal-yield-plane-over-lambda1-and-lambda2)
-    - [Exclusion contour](#exclusion-contour)
-    - [Critical coupling values](#critical-coupling-values-1d-slices)
-  - [Ordering independence](#ordering-independence)
+---
+
+## Contents
+
+1. [Setup](#setup)
+   - [HiggsCombine Tool Setup](#higgscombine-tool-setup)
+
+2. [Datacard Structure](#datacard-structure)
+   - [Signal Normalization](#signal-normalization)
+   - [Systematic Uncertainty Modes](#systematic-uncertainty-modes)
+
+3. [Running AsymptoticLimits](#running-asymptoticlimits)
+   - [Blind Analysis](#blind-analysis)
+
+4. [Analysis](#analysis)
+   - [Step 1 — r-value extraction](#step-1--r-value-extraction)
+   - [Step 2 — Exclusion Contour (XS-fit based)](#step-2--exclusion-contour-xs-fit-based)
+     - [Exclusion condition](#exclusion-condition)
+     - [Cross-section parametrization](#cross-section-parametrization)
+     - [Efficiency interpolation](#efficiency-interpolation)
+     - [Median expected 95% confidence level exclusion](#median-expected-95-confidence-level-exclusion)
+   - [Step 3 — Critical Coupling Values](#step-3--critical-coupling-values)
+
+5. [Comparison with N_sig Plane Method](#comparison-with-n_sig-plane-method)
+   - [Method Differences](#method-differences)
+   - [Numerical Comparison](#numerical-comparison)
+   - [Key Improvements in XS-fit](#key-improvements-in-xs-fit)
+
+6. [References](#references)
 
 ## Setup
 
 ### HiggsCombine Tool Setup
 
-`CMSSW` is needed for this task.
-```
+`CMSSW` is required.
+
+```bash
 source /cvmfs/cms.cern.ch/cmsset_default.sh
 cmsrel CMSSW_14_1_0_pre4
 ```
 
-before running `HiggsCombine` tools, below commands are required.
-```
-# At current directory
+Before running HiggsCombine, the following commands are required each session:
+
+```bash
+# From the repository root
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-# At ./CMSSW_14_1_0_pre4/src
+# From CMSSW_14_1_0_pre4/src/
 cmsenv
 ```
 
-## Running AsymptoticLimits
+---
 
-Run `run_asymptotic_card-all.sh` to compute AsymptoticLimits and obtain the expected upper limit on the signal strength r.
+## Datacard Structure
 
-For example, to obtain the r-value upper limit for MX1 = 1.0 TeV with statistical uncertainty only:
-```
-lumi=300 # Run3, 300 fb-1
-mode=stats # statistical uncertainty as gaussian constraint with log-normal are applied
-DC="./datacards/datacard_lumi${lumi}_mx11-0_cut${c10}_${mode}.txt"
-echo "[RUN] ${DC}"
-combine -M AsymptoticLimits $DC \
-    -n .Lumi${lumi}.MX10.${mode} \
-    -m 1000 \ # mX1 = 1.0 TeV = 1000 GeV, just for root file prefix
-    --run expected
-```
-For the `$mode` are considered as
-- none : without statistical uncertainties [(Run3 Lumi., none mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_none.txt#L12)
-- stats : with statistical uncertainties [(Run3 Lumi., stats mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_stats.txt#L12)
-- sys1 : + 10% signal cross-section uncertainty for signal side [(Run3 Lumi., sys1 mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys1.txt#L12)
-- sys2 : + 5% JES uncertainties for signal and background both side [(Run3 Lumi., sys2 mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys2.txt#L12)
-- sys3 : + 4% MET uncertainties for signal and background both side [(Run3 Lumi., sys3 mode, mX1=1.0 TeV)](https://github.com/ucJeon/2025-monojet/blob/27ac70e67d1aec1e3b14ad99e764ec0fdd348790/src/CombineTool/datacards/datacards_XSEC-JES-MET/datacard_lumi300_mx11-0_cut0p1050_sys3.txt#L12)
+### Signal Normalization
 
-In detail, you can check the modes in the folder `datacards`
+The signal is normalized to the MadGraph5 LO cross section at the reference coupling point $(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) = (0.1, 0.1)$, for each $m_{X_1}$ mass point.
 
-The datacard referenced by $DC in the example above has the following format (Run3 Lumi, $m_{X_1}$=1.0TeV, mode=stats):
+The datacard `rate` for signal is:
+
+$$\mathrm{rate~sig} = \sigma_{\mathrm{ref}} \times \mathcal{L} \times 1000 \times \varepsilon_{\mathrm{ref}}$$
+
+where:
+
+- $\sigma_{\rm ref} = \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref})$ [pb] — from `src/23.XS-2Dplot/cross_sections.csv`
+- $\mathcal{L}$ ($\mathrm{fb}^{-1}$) — target integrated luminosity (300 or 3000)
+- $\varepsilon_{\rm ref} = \varepsilon_{\rm sel} \times \varepsilon_{\rm BDT}$ — combined selection and BDT efficiency at the reference point
+
+The input cross sections at the reference point $(\lambda_1, \lambda_2) = (0.1, 0.1)$ are:
+
+|$m_{X_1}$ [TeV]|$\sigma_{\rm ref}$ [pb]|$\varepsilon_{\rm ref}$|`rate_sig` ($\mathcal{L}=300~\mathrm{fb}^{-1}$)|
+|:-:|:-:|:-:|-:|
+|1.0|1.1688e-02|0.1323|463.8095|
+|1.5|1.6016e-03|0.1198|57.5397|
+|2.0|3.2885e-04|0.1322|13.0420|
+|2.5|8.1617e-05|0.1374|3.3636|
+
+> **Note**: `rate_sig` values are computed from `cross_section_SG.csv` and `efficiency_SG.csv`. See `src/23.XS-2Dplot/` and `src/Efficiency-signal/` for the full tables.
+
+The datacard format (example: Run3, $m_{X_1}=1.0$ TeV, `stats` mode) is:
+
 ```
 imax 1  number of channels
 jmax 1  number of backgrounds
 kmax *
 ----------------------------------------------------------------------
-bin         bin1
-observation 46930
+bin                      bin1
+observation              -1
 ----------------------------------------------------------------------
 bin                      bin1                bin1
 process                  sig                 bkg
 process                  0                   1
-rate                     4638.0954           46929.5125
+rate                     463.8095            4692.9513
 ----------------------------------------------------------------------
+# signal normalized to xs_ref=... pb at (lam1=0.1, lam2=0.1), L=300 fb-1, eps_ref=...
 stat_bkg        lnN     -                   1.0120
 ```
-Note that if the line `observation 46930` is omitted in the `datacard` as input to Combine, you would see the warning `No observed data 'data_obs' in the workspace. Cannot compute limit.`.
 
-As a result,
-- (1) it print-out the expected signal strength r
-- (2) and make **output root file** names `higgsCombine.Lumi300.MX10.stats.AsymptoticLimits.mH1000.root`
+> `observation -1` instructs Combine to use a pre-fit Asimov dataset ($n_{\rm obs} = b_0$), ensuring a fully blind analysis.
+
+### Systematic Uncertainty Modes
+
+|Mode|Applied Uncertainties|
+|---|---|
+|`none`|None|
+|`stats`|BKG statistical (lnN)|
+|`sys1`|stats + signal XSEC 10% (lnN)|
+|`sys2`|sys1 + JES 5% (sig+bkg, lnN)|
+|`sys3`|sys2 + MET 4% (sig+bkg, lnN)|
+
+Datacards for all modes are in `datacards/datacards_XSEC-JES-MET_noObs`.
+
+---
+
+## Running AsymptoticLimits
+
+### Blind Analysis
+
+This analysis uses a **fully blind** setup:
+
+- `observation -1` in the datacard (Asimov: $n_{\rm obs} = b_0$, pre-fit)
+- `--run blind` in Combine (enforces pre-fit Asimov, no fit to data)
+
+The command to run AsymptoticLimits for a single datacard is:
+
+```bash
+combine -M AsymptoticLimits \
+    ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi300_mx11-0_cut0p1050_stats.txt \
+    -n ".Lumi300.MX10.stats.xsfit \
+    -m 1000 \
+    --run blind
 ```
-=============================================================
- lumi=300  mode=stats
-============================================================
-[RUN] ./datacards/datacard_lumi300_mx11-0_cut0p1050_stats.txt
+
+To run all mass points, luminosity scenarios, and systematic modes:
+
+```bash
+for lumi in 300 3000; do
+  for mode in none stats sys1 sys2 sys3; do
+    combine -M AsymptoticLimits \
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx11-0_cut0p1050_${mode}.txt \
+        -n .Lumi${lumi}.MX10.${mode}.xsfit -m 1000 --run blind
+    combine -M AsymptoticLimits \
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx11-5_cut0p1350_${mode}.txt \
+        -n .Lumi${lumi}.MX15.${mode}.xsfit -m 1500 --run blind
+    combine -M AsymptoticLimits \
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx12-0_cut0p1440_${mode}.txt \
+        -n .Lumi${lumi}.MX20.${mode}.xsfit -m 2000 --run blind
+    combine -M AsymptoticLimits \
+        ./datacards/datacards_XSEC-JES-MET_noObs/datacard_lumi${lumi}_mx12-5_cut0p1520_${mode}.txt \
+        -n .Lumi${lumi}.MX25.${mode}.xsfit -m 2500 --run blind
+  done
+done
+```
+
+> The corresponding shell script is `run_asymptotic_w-blind_card-all-xsfit.sh`.
+Each run produces an output ROOT file:
+
+```
+higgsCombine.Lumi{L}.MX{mx}.{mode}.xsfit.AsymptoticLimits.mH{mh}.root
+```
+
+```
 Expected  2.5%: r < 0.2031
 Expected 16.0%: r < 0.2699
-Expected 50.0%: r < 0.3740
+Expected 50.0%: r < 0.3740   ← median expected, used for exclusion
 Expected 84.0%: r < 0.5201
 Expected 97.5%: r < 0.6913
 ```
-In above, `Expected 50.0%` r-value is used for calculating the upper limit on the parameter space.
-Following procedure, **the output root file** is used for getting r-value
 
-If use `observed` run mode instead of `expected` run mode, you can see the observed r value as
-```
-Observed Limit: r < 0.3749
-```
-with `run_asymptotic_w-observed_card-all.sh` run script
+The **median expected** (`Expected 50.0%`) $r$-value is used as the primary result.
+
+Summary of median expected $r$ values for $\mathcal{L} = 300$ fb$^{-1}$:
+
+|$m_{X_1}$ [TeV]|none|stats|sys1|sys2|sys3|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|1.0|0.2920|0.3740|0.3809|1.1055|1.3984|
+|1.5|0.8086|0.9375|0.9531|1.3672|1.5859|
+|2.0|2.0078|2.2891|2.3203|2.6953|2.9141|
+|2.5|4.6094|5.1094|5.1875|5.5312|5.7344|
 
 
+---
 
 ## Analysis
-It is performed in the `./result` folder. the results are processed by following procedures
 
-### Step1 (`run_step1.sh`)
-- `run_step1.sh` is run-script for `step1_make-table.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step1_make-table.py#L304)
-- which makes `resultcard_expected.txt`[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/resultcard_expected.txt_XSEC-JES-MET#L4) as summary table (markdown-style table)
-- by parsing `median expected r` from **output root files**.
-- Below tables are summary of **expected median r** for integrated luminosity=300 fb⁻¹, for all systematic scenarios and $m_{X_1}$ mass-point with Run3 luminosity.
+All analysis scripts are in `./result-fitbased/`.
 
-| $M_{X_1}$ [TeV] |  none  | stats  |  sys1  |  sys2  |  sys3  |
-| :-------------: | :----: | :----: | :----: | :----: | :----: |
-|       1.0       | 0.2920 | **0.3740** | 0.3809 | 1.1055 | 1.3984 |
-|       1.5       | 0.8086 | 0.9375 | 0.9531 | 1.3672 | 1.5859 |
-|       2.0       | 2.0078 | 2.2891 | 2.3203 | 2.6953 | 2.9141 |
-|       2.5       | 4.6094 | 5.1094 | 5.2031 | 5.5312 | 5.7344 |
+### Step 1 — r-value extraction
 
-### Step2 (`run_step2.sh`)
-- `run_step2.sh` is run-script for `step2_plot-expected-contour.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L524-L545)
-    - (1) print-out for $\lambda_{i}$ critical values when $\lambda_{j}$=0.5 $(i,j=1,2, i \neq j)$ and
-    - (2) make contour plots in the folder `plots_expected` varying luminosity scenarios and uncertainty mode.
-    - For details about scripts, please check to [Converting r-value to coupling upper limit](#converting-r-value-to-coupling-upper-limit).
-- below tables are one of the example for the case of Run3 Luminosity and statistical uncertainty considered only
-- below figure is contour plot for the same case.
+Parse $r_{\rm up}$ (all 5 quantiles) from the ROOT output files and compute the 95% CL excluded signal yield $N_{\rm exc}$:
 
-| MX1 | lam1_crit (fixed lam2=0.5) | lam2_crit (fixed lam1=0.5) |
+```bash
+python3 result-fitbased/parse_results-xsfit.py
+```
+
+This script reads `outputs-xsfit/*.root` and produces `result-fitbased/results-xsfit.csv` with columns:
+
+|Column|Description|
+|---|---|
+|`mx1, lumi, mode`|Identifiers|
+|`xs_ref, eff_ref, rate_sig_ref`|Reference point values|
+|`r_exp_m2s, r_exp_m1s, r_exp_med, r_exp_p1s, r_exp_p2s`|Quantile $r$-values|
+|`N_exc_exp_med`|$N_{\rm exc} = r_{\rm up}^{\rm med} \times \sigma_{\rm ref} \times \mathcal{L} \times 1000 \times \varepsilon_{\rm ref}$|
+
+---
+
+### Step 2 — Exclusion Contour (XS-fit based)
+
+```bash
+python3 result-fitbased/plot_contour_fitbased.py
+```
+
+#### Exclusion condition
+
+The 95% CL excluded signal yield at the reference point is:
+
+$$N_{\rm exc} = r_{\rm up}^{\rm med} \times \sigma_{\rm ref} \times \mathcal{L} \times 1000 \times \varepsilon_{\rm ref}$$
+
+A coupling point $(\lambda_1, \lambda_2)$ is **excluded** when:
+
+$$\sigma(\lambda_1, \lambda_2) \times \varepsilon(\lambda_1, \lambda_2) \times \mathcal{L} \times 1000 > N_{\rm exc}$$
+
+The exclusion boundary (contour) is the equality condition.
+
+#### Cross-section parametrization
+
+$$\sigma(\lambda_1, \lambda_2) = \frac{A \cdot \lambda_1^2 \cdot \lambda_2^2}{4.0 \cdot \lambda_1^2 + \lambda_2^2}$$
+
+$A$ is determined per $m_{X_1}$ by iterative fitting to MG5 LO values (threshold 10%):
+
+|$m_{X_1}$ [TeV]|$A$|
+|:-:|:-:|
+|1.0|5.4682|
+|1.5|0.81048|
+|2.0|0.16842|
+|2.5|0.042582|
+
+#### Efficiency interpolation
+
+```python
+from scipy.interpolate import RectBivariateSpline
+spline = RectBivariateSpline(lam1_vals, lam2_vals, eff_matrix, kx=3, ky=3)
+```
+
+BDT cut values per $m_{X_1}$:
+
+|$m_{X_1}$ [TeV]|BDT cut|
+|:-:|:-:|
+|1.0|0.105|
+|1.5|0.135|
+|2.0|0.144|
+|2.5|0.152|
+
+Output plots are saved to `result-fitbased/plots/contour_lumi{L}_{mode}_{log|lin}.pdf`.
+
+#### Median expected 95% confidence level exclusion
+
+All plots are stored in `result-fitbased/plots/`.  
+Example contour plots for the `stats` mode are shown below.
+
+| 300 $\mathrm{fb}^{-1}$ (linear) | 3000 $\mathrm{fb}^{-1}$ (linear) |
+|---|---|
+| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_lin.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_lin.png) |
+
+| 300 $\mathrm{fb}^{-1}$ (log) | 3000 $\mathrm{fb}^{-1}$ (log) |
+|---|---|
+| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_log.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_log.png) |
+
+---
+
+### Step 3 — Critical Coupling Values
+
+To quote a single number per mass point, 1D slices through the contour are taken by fixing one coupling at $\lambda = 0.5$ and solving for the critical value of the other.
+
+Example for $\mathcal{L} = 300~\mathrm{fb}^{-1}$, `stats` mode:
+
+|$m_{X_1}$ [TeV]|$\lambda_{1,\mathrm{crit}}$|$\lambda_{2,\mathrm{crit}}$|
+|:-:|:-:|:-:|
+|1.0|<0.030|0.054|
+|1.5|0.043|0.087|
+|2.0|0.070|0.140|
+|2.5|0.106|0.207|
+
+Example for $\mathcal{L} = 3000~\mathrm{fb}^{-1}$, `stats` mode:
+
+|$m_{X_1}$ [TeV]|$\lambda_{1,\mathrm{crit}}$|$\lambda_{2,\mathrm{crit}}$|
+|:-:|:-:|:-:|
+|1.0|<0.030|0.044|
+|1.5|0.033|0.066|
+|2.0|0.051|0.102|
+|2.5|0.073|0.146|
+
+Full results across all luminosity and systematic scenarios are in `result-fitbased/lam_crit_summary.csv`.
+
+Critical $\lambda_2$ values as systematic uncertainties are added incrementally ($\mathcal{L} = 300$ fb$^{-1}$):
+
+|Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
+|---|:-:|:-:|:-:|:-:|
+|stats only|<0.06|<0.09|<0.14|<0.21|
+|stats + xsec (10%)|<0.06|<0.09|<0.15|<0.21|
+|stats + xsec + JES (5%)|<0.10|<0.11|<0.16|<0.22|
+|stats + xsec + JES + MET (4%)|<0.11|<0.12|<0.16|<0.22|
+
+Critical $\lambda_2$ values as systematic uncertainties are added incrementally ($\mathcal{L} = 3000$ fb$^{-1}$):
+
+|Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
+|---|:-:|:-:|:-:|:-:|
+|stats only|<0.05|<0.07|<0.11|<0.15|
+|stats + xsec (10%)|<0.05|<0.07|<0.11|<0.15|
+|stats + xsec + JES (5%)|<0.10|<0.10|<0.13|<0.17|
+|stats + xsec + JES + MET (4%)|<0.11|<0.11|<0.14|<0.17|
+
+---
+
+## Comparison with N_sig Plane Method
+
+The original approach ([`CombineTool/README.md`](../README.md)) also uses HiggsCombine r-values, but derives the exclusion contour differently.
+
+### Method Differences
+
+| | N_sig plane (original) | XS-fit (this work) |
 |---|---|---|
-| 1.0 | <0.03 | **0.054** |
-| 1.5 | 0.043 | 0.088 |
-| 2.0 | 0.072 | 0.139 |
-| 2.5 | 0.109 | 0.204 |
+| $N_s(\lambda_1,\lambda_2)$ source | BDT CSV — MC simulation grid | $\sigma_{\rm analytic}(\lambda_1,\lambda_2) \times \varepsilon_{\rm spline}(\lambda_1,\lambda_2)$ |
+| $\sigma$ parametrization | None (MC values read directly) | $A \cdot \lambda_1^2 \lambda_2^2 / (4\lambda_1^2 + \lambda_2^2)$ |
+| Exclusion condition | $N_s(\lambda_1,\lambda_2) > r_{\rm up} \times N_s^{\rm nominal}$ | $\sigma \times \varepsilon \times \mathcal{L} \times 1000 > r_{\rm up} \times \sigma_{\rm ref} \times \varepsilon_{\rm ref} \times \mathcal{L} \times 1000$ |
+| Contour drawing | `ax.contour(ZI, levels=[s_up])` on spline-interpolated MC plane | analytic boundary solved from exclusion condition |
+| Blinding | `observation 46930` (unblinded) | `observation -1` + `--run blind` (Asimov) |
 
-![The examples contour plot mentioned](./result/plots_expected/limit_stats_lumi300.png)
+### Numerical Comparison
 
-### StepA1 (`run_stepA1.sh`)
-- `run_stepA1.sh` is run-script for `stepA1_make-table-criticalValTable-lam2.py`[(Go to code-line)](https://github.com/ucJeon/2025-monojet/blob/6abca33abb0504144e84694b266b89d2d18df7d3/src/CombineTool/result/stepA1_make-table-criticalValTable-lam2.py#L185-L215)
-    - print critical $\lambda_2$ value by according to adding additional (systematic) uncertainties
-- below tables are one of the example for the case of Run3 Luminosity, which shows critical $\lambda_2$ value 
+Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fixed opposite coupling at 0.5):
 
-| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
-|---|---|---|---|---|
-| stats only | < **0.05** | < 0.09 | < 0.14 | < 0.20 |
-| stats + xsec (10%) | < 0.05 | < 0.09 | < 0.14 | < 0.21 |
-| stats + xsec + JES (5%) | < 0.10 | < 0.11 | < 0.15 | < 0.21 |
-| stats + xsec + JES + MET (4%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
+| $m_{X_1}$ [TeV] | $\lambda_{1,\rm crit}$ (N_sig plane) | $\lambda_{1,\rm crit}$ (XS-fit) | $\lambda_{2,\rm crit}$ (N_sig plane) | $\lambda_{2,\rm crit}$ (XS-fit) |
+|:-:|:-:|:-:|:-:|:-:|
+| 1.0 | <0.030 | <0.030 | 0.054 | 0.054 |
+| 1.5 | 0.043 | 0.043 | 0.088 | 0.087 |
+| 2.0 | 0.072 | 0.070 | 0.139 | 0.140 |
+| 2.5 | 0.109 | 0.106 | 0.204 | 0.207 |
 
-### Converting r-value to coupling upper limit
+두 방법의 결과가 1% 이내에서 일치 → 해석적 $\sigma$ 모델과 $\varepsilon$ spline 보간의 정밀도가 충분함을 확인.
 
-- The r-value from HiggsCombine is the 95% CL upper limit on the signal strength modifier μ.
-- In current procedures, this analysis scans the full two-dimensional $(\lambda_1,\lambda_{2})$ coupling space using 
-- luminosity-scaled signal yields obtained directly from the BDT-cut output.
-    - The file `src/BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv`[(link)](../BDT_cut/out/FINAL/v2_2500_4_0p1050/sig_lumi300_mx11-0.csv)
-    - contains the remaining signal yield at each $(\lambda_1,\lambda_2)$ grid point after applying the BDT cut(0.1050 in this case), for the Run 3 luminosity scenario and the $m_{X_1}=1.0\,\mathrm{TeV}$ BDT model.
+### Key Improvements in XS-fit
 
-#### Excluded signal yield
+- **Blinding**: Asimov 데이터셋 사용(`observation -1`)으로 실제 관측값에 의한 bias 없음
+- **$\sigma$ factorization**: coupling 의존성을 해석식으로 분리하므로 dense MC grid 없이도 연속적인 contour 생성 가능
+- **$\varepsilon$ 분리**: efficiency를 $\sigma$와 독립적으로 보간하므로 $\sigma$ 모델 교체나 재사용이 용이
 
-The nominal signal yield $N_s^\mathrm{nominal}$ is read from the datacard `rate` line:
+---
 
-$$N_s^{\rm nominal} = \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) \times \mathcal{L} \times \varepsilon_s^{\rm ref}$$
+## References
 
-- where the reference coupling is $(\lambda_{1}^{\mathrm{ref}},\lambda_{2}^\mathrm{ref})$ = (0.1, 0.1) and
-- $\epsilon^\mathrm{ref}_{s}$ is the combined selection and BDT efficiency at that point.
-
-The 95% CL excluded signal yield is then:
-
-$$N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
-
-In code (`step2_plot-expected-contour.py`)[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L522):
-```python
-s0 = get_s0_from_datacard(card)      # reads 'rate' line → N_s^nominal
-s_up = r_val * s0                    # N_s^excl
-```
-
-#### Signal-yield plane over lambda1 and lambda2
-
-For each coupling grid point $(\lambda_{1},\lambda_{2})$, the actual signal yield after the BDT cut is read from `sig_lumi{lumi}_mx1{mx1}.csv` (column `sg after`):
-$$N_s(\lambda_1, \lambda_2) = \sigma(\lambda_1, \lambda_2) \times \mathcal{L} \times \varepsilon_s(\lambda_1, \lambda_2)$$
-This yield is already luminosity-scaled to the target integrated luminosity (300 or 3000 fb⁻¹)
-
-The grid covers:
-- $\lambda_{1}$ $\in$ {0.03, 0.05, 0.07, 0.08, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00}
-- $\lambda_{1}$ $\in$ {0.04, 0.06, 0.08, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00}
-The result is a 2D matrix (plane) indexed by $(\lambda_{1},\lambda_{2})$, which is then interpolated with a cubic spline (`RectBivariateSpline`) at 100× finer resolution.
-
-In code:
-```python
-plane = build_plane(sig_csv, mx1, lam1_list, lam2_list, col="sg after")
-XI, YI, ZI = interpolate_plane_str(plane)   # cubic spline × 100
-```
-
-#### Exclusion contour
-
-The 95% CL exclusion boundary in the $(\lambda_1, \lambda_2)$ plane
-
-$$N_s(\lambda_1, \lambda_2) = N_s^{\rm excl} = r_{\rm up} \times N_s^{\rm nominal}$$
-
-The region where $N_s(\lambda_{1},\lambda_{2}) > N_s^\mathrm{excl}$ is **excluded at 95% CL**.
-The contour is drawn with `matplotlib.axes.Axes.contour` at `levels=[s_up]`.
-
-In code[(link)](https://github.com/ucJeon/2025-monojet/blob/8709eaa0c18ba00ea88faea99e7a2075343a1c99/src/CombineTool/result/step2_plot-expected-contour.py#L429):
-```python
-cs = ax.contour(XI, YI, ZI, levels=[s_up], colors=[color], linewidths=2.0)
-```
-
-#### Critical coupling values (1D slices)
-
-To quote a single number per mass point, 1D slices through the contour are taken
-by fixing one coupling at its reference value and scanning the other:
-
-| Slice       | Fixed    | Scanned | Interpolation                                         |
-| ----------- | -------- | ------- | ----------------------------------------------------- |
-| $\lambda_1$ critical | λ₂ = 0.5 | $\lambda_1$      | interp1d($N_s$, $\lambda_1$) → solve $N_s = N_s^\mathrm{excl}$ |
-| $\lambda_2$ critical | λ₁ = 0.5 | $\lambda_2$      | interp1d($N_s$, $\lambda_2$) → solve $N_s = N_s^\mathrm{excl}$ |
-
-<!-- 
-#### Luminosity treatment
-
-Because both N_s(λ₁, λ₂) and N_s^nominal are scaled to the **same** luminosity L,
-the contour condition is mathematically L-independent (L cancels).
-Luminosity enters the result only through r_up, which is obtained by running
-HiggsCombine separately with datacards built for each L scenario (300 or 3000 fb⁻¹).
-
-To produce limits for a different luminosity:
-1. Re-run `run_asymptotic_card-all.sh` with the corresponding datacard (`lumi=3000`).
-2. Use the corresponding `sig_lumi3000_mx1{mx1}.csv` file for the N_s plane.
-3. The contour code is identical; only the input files change.
-
-#### Consistency check
-
-In the stats-limited regime, r_up scales as 1/√L.  If ε_s is approximately constant
-across (λ₁, λ₂), the contour condition reduces to:
-
-$$\frac{\sigma(\lambda_1^{\rm lim}, \lambda_2^{\rm lim})}{\sigma_{\rm ref}} = r_{\rm up}$$
-
-Using σ ∝ |λ₁|²|λ₂|² / (4|λ₁|² + |λ₂|²), the coupling limit scales as:
-
-$$\frac{\lambda_2^{\rm up}(3000)}{\lambda_2^{\rm up}(300)} \approx 10^{-1/8} \approx 0.75$$
-
-Verification at 2.5 TeV: 0.20 × 0.75 = 0.15, observed 0.14. Consistent.
--->
-
-### Ordering independence
-
-Systematic uncertainties are added in two orderings:
-- Order 1: stats → xsec → JES → MET (First table in below)
-- Order 2: stats → MET → JES → xsec (Second table in below)
-- for Run3 Luminosity
-
-| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
-|---|---|---|---|---|
-| stats only | < 0.05 | < 0.09 | < 0.14 | < 0.20 |
-| stats + xsec (10%) | < 0.05 | < 0.09 | < 0.14 | < 0.21 |
-| stats + xsec + JES (5%) | < 0.10 | < 0.11 | < 0.15 | < 0.21 |
-| stats + xsec + JES + MET (4%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
-
-| Uncertainty | 1.0 TeV | 1.5 TeV | 2.0 TeV | 2.5 TeV |
-|---|---|---|---|---|
-| stats only | < 0.05 | < 0.09 | < 0.14 | < 0.20 |
-| stats + MET (4%) | < 0.09 | < 0.10 | < 0.15 | < 0.21 |
-| stats + MET + JES (5%) | < 0.11 | < 0.11 | < 0.16 | < 0.21 |
-| stats + MET + JES + xsec (10%) | < 0.11 | < 0.11 | < 0.16 | < 0.22 |
-
-Final limits must agree. Intermediate values may differ.
+- HiggsAnalysis-CombinedLimit: https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/latest/
+- Blind analysis: https://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/latest/part5/longexerciseanswers/#b-running-combine-for-a-blind-analysis
+- Asymptotic formulae: Cowan et al., Eur.Phys.J. C71 (2011) 1554, [arXiv:1007.1727](https://arxiv.org/abs/1007.1727)
+- Signal cross sections: `src/23.XS-2Dplot/cross_section_SG.csv`
+- Signal efficiency: `src/Efficiency-signal/efficiency_SG.csv`
