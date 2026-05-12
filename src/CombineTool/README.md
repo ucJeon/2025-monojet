@@ -28,6 +28,7 @@ This directory contains the HiggsCombine setup and datacard-based limit-setting 
 5. [Comparison with N_sig Plane Method](#comparison-with-n_sig-plane-method)
    - [Method Differences](#method-differences)
    - [Numerical Comparison](#numerical-comparison)
+   - [Log-scale Contour: 300 vs 3000 fb⁻¹](#log-scale-contour-300-vs-3000-fb-1)
 
 6. [References](#references)
 
@@ -238,6 +239,16 @@ $A$ is determined per $m_{X_1}$ by iterative fitting to MG5 LO values (threshold
 |2.0|0.16842|
 |2.5|0.042582|
 
+Cross-section distribution over the $(\lambda_1, \lambda_2)$ plane for each mass point:
+
+| $m_{X_1} = 1.0$ TeV | $m_{X_1} = 1.5$ TeV |
+|---|---|
+| ![](../../23.XS-2Dplot/XSEC2D/1.0_TeV_xsec_dist.png) | ![](../../23.XS-2Dplot/XSEC2D/1.5_TeV_xsec_dist.png) |
+
+| $m_{X_1} = 2.0$ TeV | $m_{X_1} = 2.5$ TeV |
+|---|---|
+| ![](../../23.XS-2Dplot/XSEC2D/2.0_TeV_xsec_dist.png) | ![](../../23.XS-2Dplot/XSEC2D/2.5_TeV_xsec_dist.png) |
+
 #### Efficiency interpolation
 
 ```python
@@ -253,6 +264,10 @@ BDT cut values per $m_{X_1}$:
 |1.5|0.135|
 |2.0|0.144|
 |2.5|0.152|
+
+Signal efficiency over the $(\lambda_1, \lambda_2)$ plane (all mass points, after BDT cut):
+
+![](../../Efficiency-signal/eff_gs_plane.png)
 
 Output plots are saved to `result-fitbased/plots/contour_lumi{L}_{mode}_{log|lin}.pdf`.
 
@@ -341,6 +356,16 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 | 2.5 | 0.109 | 0.106 | 0.204 | 0.207 |
 
 The results of the two methods agree within 1% → This confirms that the analytical $\sigma$ model and $\varepsilon$ spline interpolation are sufficiently accurate.
+
+### Log-scale Contour: 300 vs 3000 fb⁻¹
+
+Log-scale contour plots for the `stats` mode, comparing the two luminosity scenarios side by side:
+
+| 300 $\mathrm{fb}^{-1}$ | 3000 $\mathrm{fb}^{-1}$ |
+|---|---|
+| ![](./result-fitbased/plots/contour_lumi300_stats_log.png) | ![](./result-fitbased/plots/contour_lumi3000_stats_log.png) |
+
+The higher luminosity (3000 fb⁻¹) visibly tightens the exclusion contour, pushing sensitivity toward smaller coupling values. The log scale reveals the shape of the exclusion boundary at low couplings where the linear scale compresses the structure.
 
 ---
 
