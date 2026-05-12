@@ -30,30 +30,30 @@ cmsenv
 
 ### Signal Normalization
 
-The signal is normalized to the MadGraph5 LO cross section at the reference coupling point $(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) = (0.1, 0.1)$, for each $M_{X_1}$ mass point.
+The signal is normalized to the MadGraph5 LO cross section at the reference coupling point $(\lambda_1^{\rm ref}, \lambda_2^{\rm ref}) = (0.1, 0.1)$, for each $m_{X_1}$ mass point.
 
 The datacard `rate` for signal is:
 
-$$\texttt{rate_sig} = \sigma_{\mathrm{ref}} \times \mathcal{L} \times 1000 \times \varepsilon_{\mathrm{ref}}$$
+$$\mathrm{rate~sig} = \sigma_{\mathrm{ref}} \times \mathcal{L} \times 1000 \times \varepsilon_{\mathrm{ref}}$$
 
 where:
 
 - $\sigma_{\rm ref} = \sigma(\lambda_1^{\rm ref}, \lambda_2^{\rm ref})$ [pb] — from `src/23.XS-2Dplot/cross_sections.csv`
-- $\mathcal{L}$ [fb$^{-1}$] — target integrated luminosity (300 or 3000 fb$^{-1}$)
+- $\mathcal{L}$ ($\mathrm{fb}^{-1}$) — target integrated luminosity (300 or 3000)
 - $\varepsilon_{\rm ref} = \varepsilon_{\rm sel} \times \varepsilon_{\rm BDT}$ — combined selection and BDT efficiency at the reference point
 
 The input cross sections at the reference point $(\lambda_1, \lambda_2) = (0.1, 0.1)$ are:
 
-|$M_{X_1}$ [TeV]|$\sigma_{\rm ref}$ [pb]|$\varepsilon_{\rm ref}$|`rate_sig` (L=300 fb$^{-1}$)|
-|:-:|:-:|:-:|:-:|
-|1.0|—|—|4638.10|
-|1.5|—|—|—|
-|2.0|—|—|—|
-|2.5|—|—|—|
+|$m_{X_1}$ [TeV]|$\sigma_{\rm ref}$ [pb]|$\varepsilon_{\rm ref}$|`rate_sig` ($\mathcal{L}=300~\mathrm{fb}^{-1}$)|
+|:-:|:-:|:-:|-:|
+|1.0|1.1688e-02|0.1323|463.8095|
+|1.5|1.6016e-03|0.1198|57.5397|
+|2.0|3.2885e-04|0.1322|13.0420|
+|2.5|8.1617e-05|0.1374|3.3636|
 
 > **Note**: `rate_sig` values are computed from `cross_section_SG.csv` and `efficiency_SG.csv`. See `src/23.XS-2Dplot/` and `src/Efficiency-signal/` for the full tables.
 
-The datacard format (example: Run3, $M_{X_1}=1.0$ TeV, `stats` mode) is:
+The datacard format (example: Run3, $m_{X_1}=1.0$ TeV, `stats` mode) is:
 
 ```
 imax 1  number of channels
@@ -152,7 +152,7 @@ The **median expected** (`Expected 50.0%`) $r$-value is used as the primary resu
 
 Summary of median expected $r$ values for $\mathcal{L} = 300$ fb$^{-1}$:
 
-|$M_{X_1}$ [TeV]|none|stats|sys1|sys2|sys3|
+|$m_{X_1}$ [TeV]|none|stats|sys1|sys2|sys3|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |1.0|0.2920|0.3740|0.3809|1.1055|1.3984|
 |1.5|0.8086|0.9375|0.9531|1.3672|1.5859|
@@ -217,9 +217,9 @@ The exclusion boundary (contour) is the equality condition.
 
 $$\sigma(\lambda_1, \lambda_2) = \frac{A \cdot \lambda_1^2 \cdot \lambda_2^2}{4.0 \cdot \lambda_1^2 + \lambda_2^2}$$
 
-$A$ is determined per $M_{X_1}$ by iterative fitting to MG5 LO values (threshold 10%):
+$A$ is determined per $m_{X_1}$ by iterative fitting to MG5 LO values (threshold 10%):
 
-|$M_{X_1}$ [TeV]|$A$|
+|$m_{X_1}$ [TeV]|$A$|
 |:-:|:-:|
 |1.0|5.4682|
 |1.5|0.81048|
@@ -233,9 +233,9 @@ from scipy.interpolate import RectBivariateSpline
 spline = RectBivariateSpline(lam1_vals, lam2_vals, eff_matrix, kx=3, ky=3)
 ```
 
-BDT cut values per $M_{X_1}$:
+BDT cut values per $m_{X_1}$:
 
-|$M_{X_1}$ [TeV]|BDT cut|
+|$m_{X_1}$ [TeV]|BDT cut|
 |:-:|:-:|
 |1.0|0.105|
 |1.5|0.135|
@@ -252,7 +252,7 @@ To quote a single number per mass point, 1D slices through the contour are taken
 
 Example for $\mathcal{L} = 300$ fb$^{-1}$, `stats` mode:
 
-|$M_{X_1}$ [TeV]|$\lambda_1^{\rm crit}$ (fixed $\lambda_2=0.5$)|$\lambda_2^{\rm crit}$ (fixed $\lambda_1=0.5$)|
+|$m_{X_1}$ [TeV]|$\lambda_1^{\rm crit}$ (fixed $\lambda_2=0.5$)|$\lambda_2^{\rm crit}$ (fixed $\lambda_1=0.5$)|
 |:-:|:-:|:-:|
 |1.0|<0.03|0.054|
 |1.5|0.043|0.088|
