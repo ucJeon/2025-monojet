@@ -379,3 +379,11 @@ The higher luminosity (3000 fb⁻¹) visibly tightens the exclusion contour, pus
 - Asymptotic formulae: Cowan et al., Eur.Phys.J. C71 (2011) 1554, [arXiv:1007.1727](https://arxiv.org/abs/1007.1727)
 - Signal cross sections: `src/23.XS-2Dplot/cross_section_SG.csv`
 - Signal efficiency: `src/Efficiency-signal/efficiency_SG.csv`
+
+
+## Appendix 
+
+### Cross-section planes
+
+### Efficiency check
+
