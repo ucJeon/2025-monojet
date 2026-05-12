@@ -79,7 +79,10 @@ The input cross sections at the reference point $(\lambda_1, \lambda_2) = (0.1, 
 |2.0|3.2885e-04|0.1322|13.0420|
 |2.5|8.1617e-05|0.1374|3.3636|
 
-> **Note**: `rate_sig` values are computed from `cross_section_SG.csv` and `efficiency_SG.csv`. See `src/23.XS-2Dplot/` and `src/Efficiency-signal/` for the full tables.
+Details:
+- `rate_sig` values are computed from `cross_section_SG.csv` and `efficiency_SG.csv`. See `src/23.XS-2Dplot/` and `src/Efficiency-signal/` for the full tables.
+- cross-section informations for signal are organized in `src/23.XS-2Dplot/cross_section_SG.csv`
+- cross-section informations for signal are organized in `src/23.XS-2Dplot/cross_section_SG.csv`
 
 The datacard format (example: Run3, $m_{X_1}=1.0$ TeV, `stats` mode) is:
 
