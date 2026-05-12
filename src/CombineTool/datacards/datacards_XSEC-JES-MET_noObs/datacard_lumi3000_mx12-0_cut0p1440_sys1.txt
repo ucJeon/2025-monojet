@@ -2,7 +2,8 @@ imax 1  number of channels
 jmax 1  number of backgrounds
 kmax *
 ----------------------------------------------------------------------
-bin         bin1
+bin                      bin1
+observation              -1
 ----------------------------------------------------------------------
 bin                      bin1                bin1                
 process                  sig                 bkg                 

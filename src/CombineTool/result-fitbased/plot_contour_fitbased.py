@@ -200,9 +200,9 @@ def _sig_1d(mx1: float, lumi: int, A: float, eff_sp,
 def find_lam_crit(scan_arr: np.ndarray, sig_arr: np.ndarray, n_exc: float):
     """Linear interpolation of the crossing point sig_arr == n_exc."""
     if n_exc < sig_arr.min():
-        return f">{scan_arr[-1]:.3f}"
-    if n_exc > sig_arr.max():
         return f"<{scan_arr[0]:.3f}"
+    if n_exc > sig_arr.max():
+        return f">{scan_arr[-1]:.3f}"
     try:
         return float(interp1d(sig_arr, scan_arr, kind="linear")(n_exc))
     except Exception:
