@@ -185,6 +185,18 @@ This script reads `outputs-xsfit/*.root` and produces `result-fitbased/results-x
 ```bash
 python3 result-fitbased/plot_contour_fitbased.py
 ```
+#### Median expected 95% confidence level exclusion
+
+All plots are stored in `result-fitbased/plots/`.  
+Example contour plots for the `stats` mode are shown below.
+
+| 300 fb$^{-1}$ (linear) | 3000 fb$^{-1}$ (linear) |
+|---|---|
+| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_lin.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_lin.png) |
+
+| 300 fb$^{-1}$ (log) | 3000 fb$^{-1}$ (log) |
+|---|---|
+| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_log.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_log.png) |
 
 #### Why XS-fit based (not yield-spline)?
 
