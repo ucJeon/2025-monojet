@@ -82,7 +82,9 @@ The input cross sections at the reference point $(\lambda_1, \lambda_2) = (0.1, 
 Details:
 - `rate_sig` values are computed from `cross_section_SG.csv` and `efficiency_SG.csv`. See `src/23.XS-2Dplot/` and `src/Efficiency-signal/` for the full tables.
 - cross-section informations for signal are organized in `src/23.XS-2Dplot/cross_section_SG.csv`
-- cross-section informations for signal are organized in `src/23.XS-2Dplot/cross_section_SG.csv`
+- efficiency for 'selection' and 'bdt cut' are also organized in `/users/ujeon/2025-monojet/MONOJET-WORKSPACE/src/Efficiency-signal/efficiency.csv`
+
+
 
 The datacard format (example: Run3, $m_{X_1}=1.0$ TeV, `stats` mode) is:
 
