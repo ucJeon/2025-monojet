@@ -128,15 +128,12 @@ for lumi in 300 3000; do
 done
 ```
 
-> The corresponding shell script is `run_asymptotic_w-blind_card-all.sh`.
-
+> The corresponding shell script is `run_asymptotic_w-blind_card-all-xsfit.sh`.
 Each run produces an output ROOT file:
 
 ```
-higgsCombine.Lumi{L}.MX{mx}.{mode}.AsymptoticLimits.mH{mh}.root
+higgsCombine.Lumi{L}.MX{mx}.{mode}.xsfit.AsymptoticLimits.mH{mh}.root
 ```
-
-and prints the expected upper limits on the signal strength $r$:
 
 ```
 Expected  2.5%: r < 0.2031
@@ -155,7 +152,8 @@ Summary of median expected $r$ values for $\mathcal{L} = 300$ fb$^{-1}$:
 |1.0|0.2920|0.3740|0.3809|1.1055|1.3984|
 |1.5|0.8086|0.9375|0.9531|1.3672|1.5859|
 |2.0|2.0078|2.2891|2.3203|2.6953|2.9141|
-|2.5|4.6094|5.1094|5.2031|5.5312|5.7344|
+|2.5|4.6094|5.1094|5.1875|5.5312|5.7344|
+
 
 ---
 
@@ -171,7 +169,7 @@ Parse $r_{\rm up}$ (all 5 quantiles) from the ROOT output files and compute the 
 python3 result-fitbased/parse_results-xsfit.py
 ```
 
-This script reads `outputs-xsfit/*.root` and produces `results-xsfit.csv` with columns:
+This script reads `outputs-xsfit/*.root` and produces `result-fitbased/results-xsfit.csv` with columns:
 
 |Column|Description|
 |---|---|
