@@ -13,7 +13,8 @@ step2_plot-expected-contour.py (updated)
 
 import os as _os
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
-
+import mplhep as hep
+hep.style.use("CMS")
 # ── Input Paths ──────────────────────────────────────────────
 
 RESULTCARD   = _os.path.join(_HERE, "resultcard_expected.txt")
@@ -116,7 +117,7 @@ HAD_REGIONS = {
     # "1-0": {"x": 0.05, "y": 0.07, "show": True, "color": COLOR_MAP["1-0"], "hatch": ""},
     "1-0": {"x": 0.05, "y": 0.07, "show": True, "color": "#C7C7C7", "hatch": ""},
     # "1-5": {"x": 0.040, "y": 0.057, "show": False, "color": COLOR_MAP["1-5"], "hatch": "////"},
-    "1-5": {"x": 0.040, "y": 0.057, "show": False, "color": "#616161", "hatch": "///"},
+    "1-5": {"x": 0.040, "y": 0.057, "show": True, "color": "#616161", "hatch": "///"},
     # 2.0, 2.5 도 필요시 추가
 }
 
@@ -279,7 +280,7 @@ def _style_axes(ax, log_scale: bool) -> None:
     """Apply common axis styling."""
     ax.set_xlabel(r"$\lambda_{1}$", fontsize=16, labelpad=10)
     ax.set_ylabel(r"$\lambda_{2}$", fontsize=16, labelpad=10)
-    ax.tick_params(axis='both', which='major', labelsize=13)
+    ax.tick_params(axis='both', which='major', labelsize=13, top=True, right=True)
     ax.set_xticks(X_TICKS)
     ax.set_yticks(Y_TICKS)
 
@@ -524,6 +525,7 @@ def main():
             # Plot
             fig = make_limit_plot(lumi, limits, mode, SIG_DIR_MAP, LAM1_LIST, LAM2_LIST)
             fig.savefig(_os.path.join(OUT_DIR, f"limit_{mode}_lumi{lumi}.png"), dpi=DPI)
+            fig.savefig(_os.path.join(OUT_DIR, f"limit_{mode}_lumi{lumi}.eps"))
             plt.close(fig)
 
             # Critical Values Table (Markdown Style)
