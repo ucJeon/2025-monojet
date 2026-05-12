@@ -385,5 +385,25 @@ The higher luminosity (3000 fb⁻¹) visibly tightens the exclusion contour, pus
 
 ### Cross-section planes
 
+Signal production cross section $\sigma(\lambda_1, \lambda_2)$ over the coupling plane for each mass point (MadGraph5 LO, analytical fit overlay).
+
+| $m_{X_1} = 1.0$ TeV | $m_{X_1} = 1.5$ TeV |
+|---|---|
+| ![](../23.XS-2Dplot/XSEC2D_Planes/XSEC_MX1_1.0_Plane.png) | ![](../23.XS-2Dplot/XSEC2D_Planes/XSEC_MX1_1.5_Plane.png) |
+
+| $m_{X_1} = 2.0$ TeV | $m_{X_1} = 2.5$ TeV |
+|---|---|
+| ![](../23.XS-2Dplot/XSEC2D_Planes/XSEC_MX1_2.0_Plane.png) | ![](../23.XS-2Dplot/XSEC2D_Planes/XSEC_MX1_2.5_Plane.png) |
+
 ### Efficiency check
+
+Signal efficiency $\varepsilon(\lambda_1, \lambda_2)$ (selection × BDT cut) over the coupling plane for each mass point. Source: `src/Efficiency-signal/plots/`.
+
+| $m_{X_1} = 1.0$ TeV | $m_{X_1} = 1.5$ TeV |
+|---|---|
+| [efficiency\_map\_MX11-0.pdf](../Efficiency-signal/plots/efficiency_map_MX11-0.pdf) | [efficiency\_map\_MX11-5.pdf](../Efficiency-signal/plots/efficiency_map_MX11-5.pdf) |
+
+| $m_{X_1} = 2.0$ TeV | $m_{X_1} = 2.5$ TeV |
+|---|---|
+| [efficiency\_map\_MX12-0.pdf](../Efficiency-signal/plots/efficiency_map_MX12-0.pdf) | [efficiency\_map\_MX12-5.pdf](../Efficiency-signal/plots/efficiency_map_MX12-5.pdf) |
 
