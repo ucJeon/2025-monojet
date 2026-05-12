@@ -363,7 +363,7 @@ Log-scale contour plots for the `stats` mode, comparing the two luminosity scena
 
 | 300 $\mathrm{fb}^{-1}$, $N_s$ | 300 $\mathrm{fb}^{-1}$, XS-fit |
 |---|---|
-| ![](./result/plots_expected/limit_stats_lumi300.png) | ![](./result-fitbased/plots/contour_lumi3000_stats_log.png) |
+| ![](./result/plots_expected/limit_stats_lumi300.png) | ![](./result-fitbased/plots/contour_lumi300_stats_log.png) |
 
 The higher luminosity (3000 fb⁻¹) visibly tightens the exclusion contour, pushing sensitivity toward smaller coupling values. The log scale reveals the shape of the exclusion boundary at low couplings where the linear scale compresses the structure.
 
