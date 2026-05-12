@@ -341,7 +341,7 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 | 2.0 | 0.072 | 0.070 | 0.139 | 0.140 |
 | 2.5 | 0.109 | 0.106 | 0.204 | 0.207 |
 
-두 방법의 결과가 1% 이내에서 일치 → 해석적 $\sigma$ 모델과 $\varepsilon$ spline 보간의 정밀도가 충분함을 확인.
+The results of the two methods agree within 1% → This confirms that the analytical $\sigma$ model and $\varepsilon$ spline interpolation are sufficiently accurate.
 
 ### Key Improvements in XS-fit
 
