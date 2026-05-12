@@ -28,7 +28,7 @@ This directory contains the HiggsCombine setup and datacard-based limit-setting 
 5. [Comparison with N_sig Plane Method](#comparison-with-n_sig-plane-method)
    - [Method Differences](#method-differences)
    - [Numerical Comparison](#numerical-comparison)
-   - [Log-scale Contour: 300 vs 3000 fb⁻¹](#log-scale-contour-300-vs-3000-fb-1)
+   - [Log-scale Contour Comparison: Run3](#log-scale-contour-comparison:-run3)
 
 6. [References](#references)
 
@@ -357,13 +357,13 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 
 The results of the two methods agree within 1% → This confirms that the analytical $\sigma$ model and $\varepsilon$ spline interpolation are sufficiently accurate.
 
-### Log-scale Contour: 300 vs 3000 fb⁻¹
+### Log-scale Contour Comparison: Run3
 
 Log-scale contour plots for the `stats` mode, comparing the two luminosity scenarios side by side:
 
-| 300 $\mathrm{fb}^{-1}$ | 3000 $\mathrm{fb}^{-1}$ |
+| 300 $\mathrm{fb}^{-1}$, $N_s$ | 300 $\mathrm{fb}^{-1}$, XS-fit |
 |---|---|
-| ![](./result-fitbased/plots/contour_lumi300_stats_log.png) | ![](./result-fitbased/plots/contour_lumi3000_stats_log.png) |
+| ![](./result/plots_expected/limit_stats_lumi300.png) | ![](./result-fitbased/plots/contour_lumi300_stats_log.png) |
 
 The higher luminosity (3000 fb⁻¹) visibly tightens the exclusion contour, pushing sensitivity toward smaller coupling values. The log scale reveals the shape of the exclusion boundary at low couplings where the linear scale compresses the structure.
 
