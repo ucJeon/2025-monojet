@@ -264,11 +264,11 @@ Example contour plots for the `stats` mode are shown below.
 
 | 300 $\mathrm{fb}^{-1}$ (linear) | 3000 $\mathrm{fb}^{-1}$ (linear) |
 |---|---|
-| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_lin.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_lin.png) |
+| ![](./result-fitbased/plots/contour_lumi300_stats_lin.png) | ![](./result-fitbased/plots/contour_lumi3000_stats_lin.png) |
 
 | 300 $\mathrm{fb}^{-1}$ (log) | 3000 $\mathrm{fb}^{-1}$ (log) |
 |---|---|
-| ![](src/CombineTool/result-fitbased/plots/contour_lumi300_stats_log.png) | ![](src/CombineTool/result-fitbased/plots/contour_lumi3000_stats_log.png) |
+| ![](./result-fitbased/plots/contour_lumi300_stats_log.png) | ![](./result-fitbased/plots/contour_lumi3000_stats_log.png) |
 
 ---
 
