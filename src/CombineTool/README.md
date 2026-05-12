@@ -362,8 +362,6 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 | 2.0 | 0.072 | 0.070 | 0.139 | 0.140 |
 | 2.5 | 0.109 | 0.106 | 0.204 | 0.207 |
 
-The results of the two methods agree within 1% → This confirms that the analytical $\sigma$ model and $\varepsilon$ spline interpolation are sufficiently accurate.
-
 ### Log-scale Contour Comparison: Run3
 
 Log-scale contour plots for the `stats` mode, comparing the two luminosity scenarios side by side:
