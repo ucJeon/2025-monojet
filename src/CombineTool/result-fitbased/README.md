@@ -248,16 +248,18 @@ Example contour plots for the `stats` mode are shown below.
 
 To quote a single number per mass point, 1D slices through the contour are taken by fixing one coupling at $\lambda = 0.5$ and solving for the critical value of the other.
 
-Example for $\mathcal{L} = 300 \mathrm{fb}^{-1}$, `stats` mode:
+Example for $\mathcal{L} = 300~\mathrm{fb}^{-1}$, `stats` mode:
 
+|$m_{X_1}$ [TeV]|$\lambda_{1,\mathrm{crit}}$|$\lambda_{2,\mathrm{crit}}$|
 |:-:|:-:|:-:|
 |1.0|<0.030|0.054|
 |1.5|0.043|0.087|
 |2.0|0.070|0.140|
 |2.5|0.106|0.207|
 
-Example for $\mathcal{L} = 3000 \mathrm{fb}^{-1}$, `stats` mode:
+Example for $\mathcal{L} = 3000~\mathrm{fb}^{-1}$, `stats` mode:
 
+|$m_{X_1}$ [TeV]|$\lambda_{1,\mathrm{crit}}$|$\lambda_{2,\mathrm{crit}}$|
 |:-:|:-:|:-:|
 |1.0|<0.030|0.044|
 |1.5|0.033|0.066|
