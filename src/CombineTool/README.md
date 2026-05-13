@@ -299,7 +299,7 @@ Example for $\mathcal{L} = 300~\mathrm{fb}^{-1}$, `stats` mode:
 
 |$m_{X_1}$ [TeV]|$\lambda_{1,\mathrm{crit}}$|$\lambda_{2,\mathrm{crit}}$|
 |:-:|:-:|:-:|
-|1.0|<0.030|0.054|
+|1.0|0.028|0.054|
 |1.5|0.043|0.087|
 |2.0|0.070|0.140|
 |2.5|0.106|0.207|
@@ -308,7 +308,7 @@ Example for $\mathcal{L} = 3000~\mathrm{fb}^{-1}$, `stats` mode:
 
 |$m_{X_1}$ [TeV]|$\lambda_{1,\mathrm{crit}}$|$\lambda_{2,\mathrm{crit}}$|
 |:-:|:-:|:-:|
-|1.0|<0.030|0.044|
+|1.0|0.022|0.044|
 |1.5|0.033|0.066|
 |2.0|0.051|0.102|
 |2.5|0.073|0.146|
@@ -355,7 +355,7 @@ Critical coupling values (`stats` mode, $\mathcal{L} = 300~\mathrm{fb}^{-1}$, fi
 
 | $m_{X_1}$ [TeV] | $\lambda_{1,\rm crit}$ (N_sig plane) | $\lambda_{1,\rm crit}$ (XS-fit) | $\lambda_{2,\rm crit}$ (N_sig plane) | $\lambda_{2,\rm crit}$ (XS-fit) |
 |:-:|:-:|:-:|:-:|:-:|
-| 1.0 | <0.030 | <0.030 | 0.054 | 0.054 |
+| 1.0 | <0.030 | 0.028 | 0.054 | 0.054 |
 | 1.5 | 0.043 | 0.043 | 0.088 | 0.087 |
 | 2.0 | 0.072 | 0.070 | 0.139 | 0.140 |
 | 2.5 | 0.109 | 0.106 | 0.204 | 0.207 |
