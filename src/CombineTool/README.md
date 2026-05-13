@@ -78,10 +78,10 @@ The input cross sections at the reference point $(\lambda_1, \lambda_2) = (0.1, 
 
 |$m_{X_1}$ [TeV]|$\sigma_{\rm ref}$ [pb]|$\varepsilon_{\rm ref}$|`rate_sig` ($\mathcal{L}=300~\mathrm{fb}^{-1}$)|
 |:-:|:-:|:-:|-:|
-|1.0|1.1688e-02|0.1323|463.8095|
-|1.5|1.6016e-03|0.1198|57.5397|
-|2.0|3.2885e-04|0.1322|13.0420|
-|2.5|8.1617e-05|0.1374|3.3636|
+|1.0|1.1688e-02|0.1323|463.8891|
+|1.5|1.6016e-03|0.1198|57.5603|
+|2.0|3.2885e-04|0.1322|13.0422|
+|2.5|8.1617e-05|0.1374|3.3643|
 
 Details:
 - `rate_sig` values are computed from `cross_section_SG.csv` and `efficiency_SG.csv`. See `src/23.XS-2Dplot/` and `src/Efficiency-signal/` for the full tables.
