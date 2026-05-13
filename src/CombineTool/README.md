@@ -171,6 +171,10 @@ higgsCombine.Lumi{L}.MX{mx}.{mode}.xsfit.AsymptoticLimits.mH{mh}.root
 ```
 
 ```
+============================================================
+ lumi=300  mode=stats
+============================================================
+[RUN] ./datacards/datacards_signalnormalized/datacard_lumi300_mx11-0_cut0p1050_stats.txt
 Expected  2.5%: r < 0.2031
 Expected 16.0%: r < 0.2699
 Expected 50.0%: r < 0.3740   ← median expected, used for exclusion
@@ -186,9 +190,17 @@ Summary of median expected $r$ values for $\mathcal{L} = 300$ fb$^{-1}$:
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |1.0|0.2920|0.3740|0.3809|1.1055|1.3984|
 |1.5|0.8086|0.9375|0.9531|1.3672|1.5859|
-|2.0|2.0078|2.2891|2.3203|2.6953|2.9141|
-|2.5|4.6094|5.1094|5.1875|5.5312|5.7344|
+|2.0|2.0078|2.2891|2.3281|2.6953|2.9141|
+|2.5|4.6094|5.1094|5.1875|5.5156|5.7344|
 
+Summary of median expected $r$ values for $\mathcal{L} = 3000$ fb$^{-1}$:
+
+|$m_{X_1}$ [TeV]|none|stats|sys1|sys2|sys3|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|1.0|0.0918|0.2510|0.2559|1.0625|1.3672|
+|1.5|0.2510|0.5352|0.5449|1.0977|1.3516|
+|2.0|0.6133|1.2539|1.2773|1.8047|2.0859|
+|2.5|1.3750|2.5859|2.6250|3.1016|3.3906|
 
 ---
 
@@ -246,16 +258,6 @@ $A$ is determined per $m_{X_1}$ by iterative fitting to MG5 LO values (threshold
 |2.0|0.16842|
 |2.5|0.042582|
 
-Cross-section distribution over the $(\lambda_1, \lambda_2)$ plane for each mass point:
-
-| $m_{X_1} = 1.0$ TeV | $m_{X_1} = 1.5$ TeV |
-|---|---|
-| ![](../../23.XS-2Dplot/XSEC2D/1.0_TeV_xsec_dist.png) | ![](../../23.XS-2Dplot/XSEC2D/1.5_TeV_xsec_dist.png) |
-
-| $m_{X_1} = 2.0$ TeV | $m_{X_1} = 2.5$ TeV |
-|---|---|
-| ![](../../23.XS-2Dplot/XSEC2D/2.0_TeV_xsec_dist.png) | ![](../../23.XS-2Dplot/XSEC2D/2.5_TeV_xsec_dist.png) |
-
 #### Efficiency interpolation
 
 ```python
@@ -267,14 +269,10 @@ BDT cut values per $m_{X_1}$:
 
 |$m_{X_1}$ [TeV]|BDT cut|
 |:-:|:-:|
-|1.0|0.105|
-|1.5|0.135|
-|2.0|0.144|
-|2.5|0.152|
-
-Signal efficiency over the $(\lambda_1, \lambda_2)$ plane (all mass points, after BDT cut):
-
-![](../../Efficiency-signal/eff_gs_plane.png)
+|1.0|0.1050|
+|1.5|0.1350|
+|2.0|0.1440|
+|2.5|0.1520|
 
 Output plots are saved to `result-fitbased/plots/contour_lumi{L}_{mode}_{log|lin}.pdf`.
 
@@ -321,19 +319,19 @@ Critical $\lambda_2$ values as systematic uncertainties are added incrementally 
 
 |Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
 |---|:-:|:-:|:-:|:-:|
-|stats only|<0.06|<0.09|<0.14|<0.21|
-|stats + xsec (10%)|<0.06|<0.09|<0.15|<0.21|
-|stats + xsec + JES (5%)|<0.10|<0.11|<0.16|<0.22|
-|stats + xsec + JES + MET (4%)|<0.11|<0.12|<0.16|<0.22|
+|stats only|0.054|0.087|0.140|0.207|
+|stats + xsec (10%)|0.054|0.088|0.141|0.208|
+|stats + xsec + JES (5%)|0.096|0.106|0.152|0.215|
+|stats + xsec + JES + MET (4%)|0.107|0.114|0.158|0.219|
 
 Critical $\lambda_2$ values as systematic uncertainties are added incrementally ($\mathcal{L} = 3000$ fb$^{-1}$):
 
 |Uncertainty|1.0 TeV|1.5 TeV|2.0 TeV|2.5 TeV|
 |---|:-:|:-:|:-:|:-:|
-|stats only|<0.05|<0.07|<0.11|<0.15|
-|stats + xsec (10%)|<0.05|<0.07|<0.11|<0.15|
-|stats + xsec + JES (5%)|<0.10|<0.10|<0.13|<0.17|
-|stats + xsec + JES + MET (4%)|<0.11|<0.11|<0.14|<0.17|
+|stats only|0.044|0.066|0.102|0.146|
+|stats + xsec (10%)|0.045|0.066|0.103|0.147|
+|stats + xsec + JES (5%)|0.094|0.095|0.124|0.161|
+|stats + xsec + JES + MET (4%)|0.106|0.105|0.133|0.168|
 
 ---
 
