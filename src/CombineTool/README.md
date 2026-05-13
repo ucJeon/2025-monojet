@@ -101,9 +101,9 @@ observation              -1
 bin                      bin1                bin1
 process                  sig                 bkg
 process                  0                   1
-rate                     463.8095            4692.9513
+rate                     463.8891            4692.9513
 ----------------------------------------------------------------------
-# signal normalized to xs_ref=... pb at (lam1=0.1, lam2=0.1), L=300 fb-1, eps_ref=...
+# signal normalized to xs_ref=1.168781e-02 pb at (lam1=0.1, lam2=0.1), L=300 fb-1, eff_ref=0.1323
 stat_bkg        lnN     -                   1.0120
 ```
 
