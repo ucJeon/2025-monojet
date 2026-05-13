@@ -75,12 +75,12 @@ QUANTILE_BANDS = [
 ]
 
 # dense grid for contour drawing (λ1, λ2)
-L1_GRID = np.linspace(0.03, 1.0, 500)
-L2_GRID = np.linspace(0.04, 1.0, 500)
+L1_GRID = np.linspace(0.01, 1.0, 500) # 0.03
+L2_GRID = np.linspace(0.01, 1.0, 500) # 0.04
 
 # fine 1D scan for λ_crit
-LAM1_SCAN = np.linspace(0.03, 1.0, 4000)
-LAM2_SCAN = np.linspace(0.04, 1.0, 4000)
+LAM1_SCAN = np.linspace(0.01, 1.0, 4000)
+LAM2_SCAN = np.linspace(0.01, 1.0, 4000)
 LAM1_REF  = 0.50   # fixed when scanning λ2_crit
 LAM2_REF  = 0.50   # fixed when scanning λ1_crit
 
@@ -97,9 +97,13 @@ COLOR_MAP  = {
 
 X_TICKS   = [0.1, 0.3, 0.5, 0.7, 1.0]
 Y_TICKS   = [0.1, 0.3, 0.5, 0.7, 1.0]
-X_LIM_LOG = (0.03, 1.0)
+#X_LIM_LOG = (0.03, 1.0)
+X_LIM_LOG = (0.02, 1.0)
+#Y_LIM_LOG = (0.04, 1.0)
 Y_LIM_LOG = (0.04, 1.0)
-X_LIM_LIN = (0.03, 1.0)
+#X_LIM_LIN = (0.03, 1.0)
+X_LIM_LIN = (0.02, 1.0)
+#Y_LIM_LIN = (0.04, 1.0)
 Y_LIM_LIN = (0.04, 1.0)
 LUMI_POS  = (0.98, 1.01)    # axes-fraction coords for lumi text
 DPI       = 300
