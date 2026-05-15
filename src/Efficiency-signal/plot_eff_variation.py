@@ -47,7 +47,7 @@ for mx1, cut in OPTIMAL_CUTS.items():
               f"{mean:>8.4f}  {Z.std():>8.4f}  {Z.min():>8.4f}  {Z.max():>8.4f}  "
               f"{variation:>13.1f}%")
 
-    out = f"plots/efficiency_map_MX1{str(mx1).replace('.', '-')}.pdf"
+    out = f"plots/efficiency_map_MX1{str(mx1).replace('.', '-')}.png"
     fig.savefig(out)
     plt.close(fig)
     print(f"  → saved {out}")
