@@ -407,3 +407,6 @@ Signal efficiency $\varepsilon(\lambda_1, \lambda_2)$ (selection × BDT cut) ove
 
 ![efficiency\_map\_MX12-5.png](../Efficiency-signal/plots/efficiency_map_MX12-5.png)
 
+### Efficiency Table
+
+![eff-table](../Efficiency-signal/plots/eff_heatmap_optimal_cut.png)
